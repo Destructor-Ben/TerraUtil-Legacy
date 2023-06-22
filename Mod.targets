@@ -1,0 +1,21 @@
+<Project>
+  <Import Project="Shared.targets" />
+  <Import Project="..\tModLoader.targets" />
+
+  <ItemGroup>
+    <None Remove="lib\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="$(AssemblyName).Configuration" />
+    <Using Include="TerraUtil" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TerraUtil\TerraUtil.csproj" />
+  </ItemGroup>
+
+  <Target Name="BeforeBuild">
+    <Copy SourceFiles="$(SolutionDir)TerraUtil\bin\$(Configuration)\$(TargetFramework)\TerraUtil.dll;$(SolutionDir)TerraUtil\bin\$(Configuration)\$(TargetFramework)\TerraUtil.pdb" DestinationFolder="$(SolutionDir)$(AssemblyName)\lib"/>
+  </Target>
+</Project>
