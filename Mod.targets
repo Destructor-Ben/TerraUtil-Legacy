@@ -1,4 +1,4 @@
-<Project>
+<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="Shared.targets" />
   <Import Project="..\tModLoader.targets" />
 
@@ -16,6 +16,6 @@
   </ItemGroup>
 
   <Target Name="BeforeBuild">
-    <Copy SourceFiles="$(SolutionDir)TerraUtil\bin\$(Configuration)\$(TargetFramework)\TerraUtil.dll;$(SolutionDir)TerraUtil\bin\$(Configuration)\$(TargetFramework)\TerraUtil.pdb" DestinationFolder="$(SolutionDir)$(AssemblyName)\lib"/>
+    <Copy SourceFiles="$(SolutionDir)TerraUtil\bin\$(Configuration)\$(TargetFramework)\TerraUtil.dll;$(SolutionDir)TerraUtil\bin\$(Configuration)\$(TargetFramework)\TerraUtil.pdb" DestinationFolder="lib"/>
   </Target>
 </Project>
