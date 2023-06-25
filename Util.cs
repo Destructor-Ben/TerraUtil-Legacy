@@ -4,6 +4,8 @@ public static partial class Util
     internal static Mod Mod { get; private set; }
 
     // TODO: doesn't look like the copying works, dll doesn't appear in the lib folder
+    // TODO: port rest of mods to this new system
+    // TODO: test if this works with multiple mods
 
     /// <summary>
     /// Call this in Mod.Load to initialize TerraUtil

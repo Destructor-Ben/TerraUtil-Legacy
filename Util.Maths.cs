@@ -27,6 +27,32 @@ public static partial class Util
     public static Rectangle Screen => new Rectangle((int)ScreenPos.X, (int)ScreenPos.Y, (int)ScreenSize.X, (int)ScreenSize.Y);
 
     /// <summary>
+    /// The position of the mouse on the screen
+    /// </summary>
+    public static Vector2 MousePos => Main.MouseScreen;
+
+    /// <summary>
+    /// The position of the mouse in the world
+    /// </summary>
+    public static Vector2 MouseWorld => Main.MouseWorld;
+
+    /// <summary>
+    /// If the mouse was just clicked
+    /// </summary>
+    public static bool LeftClick => Main.mouseLeft && Main.mouseLeftRelease;
+
+    /// <summary>
+    /// Helper method for Vector2 instead of point
+    /// </summary>
+    /// <param name="rect"></param>
+    /// <param name="pos"></param>
+    /// <returns></returns>
+    public static bool Contains(this Rectangle rect, Vector2 pos)
+    {
+        return rect.Contains(pos.ToPoint());
+    }
+
+    /// <summary>
     /// Rounds the given value
     /// </summary>
     /// <param name="value"></param>
