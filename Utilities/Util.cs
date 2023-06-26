@@ -1,11 +1,11 @@
-﻿namespace TerraUtil;
+﻿namespace TerraUtil.Utilities;
 public static partial class Util
 {
     internal static Mod Mod { get; private set; }
 
-    // TODO: doesn't look like the copying works, dll doesn't appear in the lib folder
-    // TODO: port rest of mods to this new system
-    // TODO: test if this works with multiple mods
+    // TODO: automatically append dllReferences to build.txt
+    // TODO: make paths more relative to the current project instead of hardcoded
+    // TODO: make all mods ocalization keys and asset paths less generic, and ahve stuff like UI and Game in them
 
     /// <summary>
     /// Call this in Mod.Load to initialize TerraUtil
