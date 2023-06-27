@@ -1,10 +1,10 @@
 ﻿using TerraUtil.Utilities;
 
 namespace TerraUtil.Networking;
-// TODO: rework sending - Make network system class, and keep everything static there, and then make everything in the class instanced because otherwise it gets messy
-// TODO: automatic serialization
 public abstract class Packet : ModType
 {
+    #region Setup
+
     public int Type { get; private set; }
 
     public static new Mod Mod => Util.Mod;
@@ -40,6 +40,10 @@ public abstract class Packet : ModType
     {
     }
 
+    #endregion
+
+    #region Public Stuff
+
     /// <summary>
     /// If true and the current machine is the target of a packet, the packet will also be handled on that machine. Works in singleplayer.
     /// </summary>
@@ -56,6 +60,7 @@ public abstract class Packet : ModType
     /// </summary>
     public virtual void OnSend(int? toWho) { }
 
+    // TODO: automatic serialization
     /// <summary>
     /// Serializes the packet data
     /// </summary>
@@ -68,99 +73,43 @@ public abstract class Packet : ModType
     /// <param name="reader"></param>
     public abstract void Deserialize(BinaryReader reader);
 
-    private void Recieve(BinaryReader reader, int? fromWho)
-    {
-        Deserialize(reader);
-        Handle(fromWho);
-    }
+    #endregion
 
-    private ModPacket GetPacket(NetID id)
+    #region Sending Methods
+
+    private ModPacket GetPacket(NetID sendType)
     {
         var packet = Mod.GetPacket();
         packet.Write(Type);
+        Serialize(packet);
+        packet.Write((byte)sendType);
         return packet;
     }
 
-    private void SendPacket(ModPacket packet, int toWho = -1, int ignoreWho = -1)
+    private void Send(ModPacket packet, int toWho = -1, int ignoreWho = -1)
     {
         if (Util.IsSingleplayer)
             return;
 
-        Serialize(packet);
-        OnSend(Util.ClientID(toWho));
         packet.Send(toWho, ignoreWho);
-    }
-
-    private void HandleBecauseMachineIsTarget()
-    {
-        Handle(Util.ClientID(Main.myPlayer));
-    }
-
-    private void Handle_Inner(NetID id, BinaryReader reader, int? fromWho)
-    {
-        switch (id)
-        {
-            case NetID.SendToServer:
-                if (Util.IsServer)
-                    break;
-                else if (Util.IsClient)
-                    break;
-                break;
-            case NetID.SendToClient:
-                if (Util.IsServer)
-                    break;
-                else if (Util.IsClient)
-                    break;
-                break;
-            case NetID.SendToClients:
-                if (Util.IsServer)
-                    break;
-                else if (Util.IsClient)
-                    break;
-                break;
-            case NetID.SendToAllClients:
-                if (Util.IsServer)
-                    break;
-                else if (Util.IsClient)
-                    break;
-                break;
-            case NetID.SendToAll:
-                if (Util.IsServer)
-                    break;
-                else if (Util.IsClient)
-                    break;
-                break;
-            default:
-                break;
-        }
-    }
-
-    /// <summary>
-    /// Call this in Mod.HandlePacket to enable custom packet handling
-    /// </summary>
-    /// <param name="reader"></param>
-    /// <param name="sender"></param>
-    public static void Handle(BinaryReader reader, int fromWho)
-    {
-        var id = (NetID)reader.ReadByte();
-        var packet = packets[(int)id];
-        packet.Handle_Inner(id, reader, Util.ClientID(fromWho));
     }
 
     /// <summary>
     /// Sends this packet to the server
     /// </summary>
     /// <param name="handleIfTarget"></param>
-    public void SendToServer(bool handleIfTarget = true)
+    public void SendToServer()
     {
-        if (Util.IsServer && handleIfTarget)
+        if (Util.IsServer && HandleIfTarget)
         {
-            HandleBecauseMachineIsTarget();
+            // Server handles the packet itself
+            HandleFromTarget();
         }
         else if (Util.IsClient)
         {
-            var packet = GetPacket();
-            SendPacket(packet, -1, -1);
+            // Send to server
+            var packet = GetPacket(NetID.SendToServer);
+            Send(packet);
         }
     }
 
@@ -169,20 +118,25 @@ public abstract class Packet : ModType
     /// </summary>
     /// <param name="toWho"></param>
     /// <param name="handleIfTarget"></param>
-    public void SendToClient(int toWho, bool handleIfTarget = true)
+    public void SendToClient(int toWho)
     {
-        if (Util.IsClient)
+        if (Util.IsServer)
         {
-            // If we are the target then handle the packet
-            if (toWho == Main.myPlayer && handleIfTarget)
-                Handle(fromWho: Main.myPlayer);
-            else // Otherwise, send it and tell the server who we want to send it to
-                Send(toWho: Util.ServerID, extraData: toWho);
+            // Server sends the packet to the client
+            var packet = GetPacket(NetID.SendToClient);
+            Send(packet, toWho);
         }
-        else if (Util.IsServer)
+        else if (Util.IsClient && toWho == Main.myPlayer && HandleIfTarget)
         {
-            // Sending as the server just requires us to send it to the client
-            Send(toWho: toWho, extraData: Util.ServerID);
+            // This is the target machine
+            HandleFromTarget();
+        }
+        else if (Util.IsClient)
+        {
+            // Send packet to server so it can forward it
+            var packet = GetPacket(NetID.SendToClient);
+            packet.Write(toWho);
+            Send(packet);
         }
     }
 
@@ -191,12 +145,32 @@ public abstract class Packet : ModType
     /// </summary>
     /// <param name="handleIfTarget"></param>
     /// <param name="toWho"></param>
-    public void SendToClients(bool handleIfTarget = true, params int[] toWho)
+    public void SendToClients(params int[] toWho)
     {
-        // Can just loop over all of them, and then the rest of the code will handle it
-        foreach (int client in toWho)
+        if (Util.IsServer)
         {
-            SendToClient(toWho: client, handleIfTarget);
+            // Server sends packets to the clients
+            foreach (int client in toWho)
+            {
+                var packet = GetPacket(NetID.SendToClients);
+                Send(packet, client);
+            }
+        }
+        else if (Util.IsClient && toWho.Contains(Main.myPlayer) && HandleIfTarget)
+        {
+            // If this is the target machine then handle it (not sending it is handled by the server)
+            HandleFromTarget();
+        }
+        else if (Util.IsClient)
+        {
+            // Send packet to server so it can forward it
+            var packet = GetPacket(NetID.SendToClients);
+            packet.Write(toWho.Length);
+            foreach (int client in toWho)
+            {
+                packet.Write(client);
+            }
+            Send(packet);
         }
     }
 
@@ -204,15 +178,26 @@ public abstract class Packet : ModType
     /// Sends this packet to all clients
     /// </summary>
     /// <param name="handleIfTarget"></param>
-    public void SendToAllClients(bool handleIfTarget = true)
+    public void SendToAllClients()
     {
-        if (Util.IsClient)
+        if (Util.IsServer)
         {
-            Send(toWho: Util.ServerID, extraData: Util.SendToAllID);
+            // Server sends packets to all the clients
+            var packet = GetPacket(NetID.SendToAllClients);
+            packet.Send();
         }
-        else if (Util.IsServer)
+        else if (Util.IsClient)
         {
-            Send(toWho: Util.SendToAll, extraData: Util.ServerID);
+            // Handling if we want to
+            if (HandleIfTarget)
+            {
+                HandleFromTarget();
+                return;
+            }
+
+            // Send packet to server so it can forward it to everyone
+            var packet = GetPacket(NetID.SendToAllClients);
+            Send(packet);
         }
     }
 
@@ -220,9 +205,155 @@ public abstract class Packet : ModType
     /// Sends this packet to all of the clients and the server
     /// </summary>
     /// <param name="handleIfTarget"></param>
-    public void SendToAll(bool handleIfTarget = true)
+    public void SendToAll()
     {
-        SendToServer(handleIfTarget);
-        SendToAllClients(handleIfTarget);
+        if (Util.IsServer)
+        {
+            // Handling if we want to
+            if (HandleIfTarget)
+                HandleFromTarget();
+
+            // Server sends packets to all the clients
+            var packet = GetPacket(NetID.SendToAll);
+            packet.Send();
+        }
+        else if (Util.IsClient)
+        {
+            // Handling if we want to
+            if (HandleIfTarget)
+                HandleFromTarget();
+
+            // Send packet to server so it can forward it to everyone
+            var packet = GetPacket(NetID.SendToAll);
+            Send(packet);
+        }
     }
+
+    #endregion
+
+    #region Handling
+
+    /// <summary>
+    /// Call this in Mod.HandlePacket to enable custom packet handling
+    /// </summary>
+    /// <param name="reader"></param>
+    /// <param name="sender"></param>
+    public static void HandlePacket(BinaryReader reader, int sender)
+    {
+        int? fromWho = Util.ClientID(sender);
+        int id = reader.ReadInt32();
+
+        var packet = packets[id];
+        packet.Deserialize(reader);
+
+        // Handling for different send types
+        var sendType = (NetID)reader.ReadByte();
+        switch (sendType)
+        {
+            case NetID.SendToServer:
+                packet.HandleSendToServer(fromWho);
+                break;
+            case NetID.SendToClient:
+                packet.HandleSendToClient(reader, fromWho);
+                break;
+            case NetID.SendToClients:
+                packet.HandleSendToClients(reader, fromWho);
+                break;
+            case NetID.SendToAllClients:
+                packet.HandleSendToAllClients(reader, fromWho);
+                break;
+            case NetID.SendToAll:
+                packet.HandleSendToAll(reader, fromWho);
+                break;
+            default:
+                Mod.Logger.Warn("Unknown packet type: " + sendType.ToString());
+                break;
+        }
+    }
+
+    private void HandleSendToServer(int? fromWho)
+    {
+        if (Util.IsServer)
+            Handle(fromWho);
+    }
+
+    private void HandleSendToClient(BinaryReader reader, int? fromWho)
+    {
+        if (Util.IsServer)
+        {
+            // Forward the packet
+            int toWho = reader.ReadInt32();
+            var packet = GetPacket(NetID.SendToClient);
+            Send(packet, toWho);
+        }
+        else if (Util.IsClient)
+        {
+            // Handle the packet
+            Handle(fromWho);
+        }
+    }
+
+    private void HandleSendToClients(BinaryReader reader, int? fromWho)
+    {
+        if (Util.IsServer)
+        {
+            // Forward the packets
+            int numClients = reader.ReadInt32();
+            for (int i = 0; i < numClients; i++)
+            {
+                int toWho = reader.ReadInt32();
+                if (Util.ClientID(toWho) == fromWho)
+                    continue;
+
+                // Sending new packet
+                var packet = GetPacket(NetID.SendToClients);
+                packet.Send(toWho);
+            }
+        }
+        else if (Util.IsClient)
+        {
+            // Handle the packet
+            Handle(fromWho);
+        }
+    }
+
+    private void HandleSendToAllClients(BinaryReader reader, int? fromWho)
+    {
+        if (Util.IsServer)
+        {
+            // Send a packet to everyone
+            var packet = GetPacket(NetID.SendToAllClients);
+            packet.Send(ignoreClient: fromWho ?? -1);
+        }
+        else if (Util.IsClient)
+        {
+            // Handle the packet
+            Handle(fromWho);
+        }
+    }
+
+    private void HandleSendToAll(BinaryReader reader, int? fromWho)
+    {
+        if (Util.IsServer)
+        {
+            // Handle the packet
+            Handle(fromWho);
+
+            // Send a packet to everyone
+            var packet = GetPacket(NetID.SendToAllClients);
+            packet.Send(ignoreClient: fromWho ?? -1);
+        }
+        else if (Util.IsClient)
+        {
+            // Handle the packet
+            Handle(fromWho);
+        }
+    }
+
+    private void HandleFromTarget()
+    {
+        Handle(Util.ClientID(Main.myPlayer));
+    }
+
+    #endregion
 }

@@ -1,4 +1,5 @@
 ﻿using TerraUtil.Networking;
+using TerraUtil.Utilities;
 
 namespace TerraUtil;
 public class TerraUtilMod : Mod
@@ -16,6 +17,6 @@ public class TerraUtilMod : Mod
 
     public override void HandlePacket(BinaryReader reader, int whoAmI)
     {
-        PacketSystem.HandlePacket(reader, whoAmI);
+        Packet.HandlePacket(reader, whoAmI);
     }
 }

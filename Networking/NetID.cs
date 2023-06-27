@@ -1,5 +1,5 @@
 ﻿namespace TerraUtil.Networking;
-public enum NetID : byte
+internal enum NetID : byte
 {
     SendToServer,
     SendToClient,
