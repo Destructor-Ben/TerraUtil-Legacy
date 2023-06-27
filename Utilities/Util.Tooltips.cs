@@ -9,13 +9,7 @@ public static partial class Util
     /// <returns></returns>
     public static int FindIndexOfTooltipName(this List<TooltipLine> tooltips, string tooltipName)
     {
-        for (int i = 0; i < tooltips.Count; i++)
-        {
-            if (tooltips[i].Name == tooltipName)
-                return i;
-        }
-
-        return -1;
+        return tooltips.IndexOf(tooltips.Where(t => t.Name == tooltipName).FirstOrDefault());
     }
 
     /// <summary>
@@ -33,10 +27,6 @@ public static partial class Util
         {
             tooltips.InsertRange(after ? index + 1 : index, tooltipsToInsert);
         }
-        else
-        {
-            Mod.Logger.Warn("Unable to find index of tooltip line: " + name);
-        }
     }
 
     /// <summary>
@@ -46,17 +36,7 @@ public static partial class Util
     /// <param name="tooltipNames"></param>
     public static void RemoveTooltips(this List<TooltipLine> tooltips, params string[] tooltipNames)
     {
-        var temp = new List<TooltipLine>();
-        foreach (var tooltip in tooltips)
-        {
-            if (tooltipNames.Contains(tooltip.Name))
-                temp.Add(tooltip);
-        }
-
-        foreach (var item in temp)
-        {
-            tooltips.Remove(item);
-        }
+        tooltips.RemoveAll(t => tooltipNames.Contains(t.Name));
     }
 
     /// <summary>
