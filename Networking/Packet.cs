@@ -260,10 +260,10 @@ public abstract class Packet : ModType
                 packet.HandleSendToClients(reader, fromWho);
                 break;
             case NetID.SendToAllClients:
-                packet.HandleSendToAllClients(reader, fromWho);
+                packet.HandleSendToAllClients(fromWho);
                 break;
             case NetID.SendToAll:
-                packet.HandleSendToAll(reader, fromWho);
+                packet.HandleSendToAll(fromWho);
                 break;
             default:
                 Mod.Logger.Warn("Unknown packet type: " + sendType.ToString());
@@ -317,7 +317,7 @@ public abstract class Packet : ModType
         }
     }
 
-    private void HandleSendToAllClients(BinaryReader reader, int? fromWho)
+    private void HandleSendToAllClients(int? fromWho)
     {
         if (Util.IsServer)
         {
@@ -332,7 +332,7 @@ public abstract class Packet : ModType
         }
     }
 
-    private void HandleSendToAll(BinaryReader reader, int? fromWho)
+    private void HandleSendToAll(int? fromWho)
     {
         if (Util.IsServer)
         {
