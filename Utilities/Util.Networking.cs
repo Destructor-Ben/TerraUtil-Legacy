@@ -12,6 +12,11 @@ public static partial class Util
     public static bool IsMultiplayer => IsClient || IsServer;
 
     /// <summary>
+    /// If the local machines is a dedicated server
+    /// </summary>
+    public static bool IsHeadless => Main.dedServ;
+
+    /// <summary>
     /// If the local player is a multiplayer client
     /// </summary>
     public static bool IsClient => Main.netMode == NetmodeID.MultiplayerClient;

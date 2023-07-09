@@ -1,13 +1,14 @@
 ﻿using TerraUtil.Utilities;
 
 namespace TerraUtil.Networking;
-public abstract class Packet : ModType
+/// <summary>
+/// Provides an abstraction for ModPackets.
+/// </summary>
+public abstract class Packet : TerraUtilModType
 {
     #region Setup
 
     public int Type { get; private set; }
-
-    public static new Mod Mod => Util.Mod;
 
     private static Dictionary<int, Packet> packets;
     private static int idCounter;
@@ -75,7 +76,7 @@ public abstract class Packet : ModType
 
     #endregion
 
-    #region Sending Methods
+    #region Sending
 
     private ModPacket GetPacket(NetID sendType)
     {
@@ -90,7 +91,8 @@ public abstract class Packet : ModType
     {
         if (Util.IsSingleplayer)
             return;
-
+        // TODO - have NetID sendtype in send, and also allow clients to see who the packet actually came from insteaf of just the server
+        OnSend(Util.IsClient ? null : Util.ClientID(toWho));
         packet.Send(toWho, ignoreWho);
     }
 
