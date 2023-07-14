@@ -2,12 +2,12 @@
 public static partial class Util
 {
     /// <summary>
-    /// Multiply pixels per tick by this scalar to get miles per hour
+    /// Multiply pixels per tick (velocity) by this scalar to get miles per hour.
     /// </summary>
-    public static float PPTToMPH => 216000f / 42240f;
+    public const float PPTToMPH = 216000f / 42240f;
 
     /// <summary>
-    /// Helper method for Vector2 instead of point
+    /// Helper method for Vector2 instead of point.
     /// </summary>
     /// <param name="rect"></param>
     /// <param name="pos"></param>
@@ -18,13 +18,13 @@ public static partial class Util
     }
 
     /// <summary>
-    /// Rounds the given value
+    /// Rounds the given value.
     /// </summary>
     /// <param name="value"></param>
     /// <param name="nearest"></param>
     /// <returns></returns>
     public static float Round(float value, float nearest = 1f)
     {
-        return MathF.Round(value / nearest) * nearest;
+        return value - value % nearest;
     }
 }

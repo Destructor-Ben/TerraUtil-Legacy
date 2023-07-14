@@ -91,7 +91,7 @@ public abstract class Packet : TerraUtilModType
     {
         if (Util.IsSingleplayer)
             return;
-        // TODO - have NetID sendtype in send, and also allow clients to see who the packet actually came from insteaf of just the server
+        // TODO: have NetID sendtype in send, and also allow clients to see who the packet actually came from insteaf of just the server
         OnSend(Util.IsClient ? null : Util.ClientID(toWho));
         packet.Send(toWho, ignoreWho);
     }

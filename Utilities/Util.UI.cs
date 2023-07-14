@@ -74,6 +74,19 @@ public static partial class Util
             Main.instance.MouseText(text);
     }
 
+    /// <summary>
+    /// Disables all mouse text.
+    /// </summary>
+    public static void ResetMouseText()
+    {
+        Main.LocalPlayer.cursorItemIconEnabled = false;
+        Main.LocalPlayer.cursorItemIconID = 0;
+        Main.LocalPlayer.cursorItemIconText = string.Empty;
+        Main.LocalPlayer.cursorItemIconPush = 0;
+        Main.signHover = -1;
+        Main.mouseText = false;
+    }
+
     // TODO: test the WithHoverX methods
     /// <summary>
     /// Makes the specified element display the specified mouse text when hovered over.

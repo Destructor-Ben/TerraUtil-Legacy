@@ -38,7 +38,7 @@ public static partial class Util
         Mod = null;
     }
 
-    #region General Utilities
+    #region Miscellaneous Utilities
 
     /// <summary>
     /// Applies the specified items equip effects to the player
@@ -54,16 +54,27 @@ public static partial class Util
     }
 
     /// <summary>
-    /// Gets the element if it's in the dictionary, otherwise returns the default value
+    /// Gets the element if it's in the dictionary, otherwise returns the default value.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="key"></param>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
     /// <param name="dict"></param>
+    /// <param name="key"></param>
     /// <param name="defaultVal"></param>
     /// <returns></returns>
-    public static T FromDictOrDefault<T>(int key, Dictionary<int, T> dict, T defaultVal)
+    public static T2 TryGetOrGiven<T1, T2>(this Dictionary<T1, T2> dict, T1 key, T2 defaultVal)
     {
         return dict.ContainsKey(key) ? dict[key] : defaultVal;
+    }
+
+    /// <summary>
+    /// Returns if an info display is active and not hidden
+    /// </summary>
+    /// <param name="display"></param>
+    /// <returns></returns>
+    public static bool InfoDisplayActive(InfoDisplay display)
+    {
+        return display.Active() && !Main.LocalPlayer.hideInfo[display.Type];
     }
 
     #endregion
