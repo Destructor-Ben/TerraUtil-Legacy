@@ -7,6 +7,11 @@ public static partial class Util
     public const float PPTToMPH = 216000f / 42240f;
 
     /// <summary>
+    /// Multiply pixels per tick per tick (acceleration) by this scalar to get miles per hour per second.
+    /// </summary>
+    public const float PPTPTToMPHPS = PPTToMPH * 60f;// TODO: this isn't correct? should be divide, but then it doesn't work
+
+    /// <summary>
     /// Helper method for Vector2 instead of point.
     /// </summary>
     /// <param name="rect"></param>
