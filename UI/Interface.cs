@@ -47,7 +47,7 @@ public abstract class Interface : UIState, ILoadable, IModType
     /// The scaling type of the UserInterface.<br/>
     /// By default is <see cref="InterfaceScaleType.UI"/>.
     /// </summary>
-    public virtual InterfaceScaleType ScaleType { get; set; } = InterfaceScaleType.UI;
+    public virtual InterfaceScaleType ScaleType => InterfaceScaleType.UI;
 
     /// <summary>
     /// Returns the index that the layer should be inserted in the list of game interface layers.<br/>
