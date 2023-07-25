@@ -12,7 +12,6 @@ public static partial class Util
     // TODO: make paths more relative to the current project instead of hardcoded
     // TODO: make all mods localization keys and asset paths less generic, and have paths like UI and Game in them
     // TODO: IInstanced interface?
-    // TODO: change hideCode to false for all mods
 
     /// <summary>
     /// Call this in a mods constructor to initialize TerraUtil
