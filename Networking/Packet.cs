@@ -16,7 +16,7 @@ public abstract class Packet : TerraUtilModType
     public sealed override void Load()
     {
         idCounter = 0;
-        packets = new();
+        packets ??= new();
     }
 
     public sealed override void Unload()
