@@ -36,7 +36,11 @@ public static partial class Util
     /// <param name="tooltipNames"></param>
     public static void RemoveTooltips(this List<TooltipLine> tooltips, params string[] tooltipNames)
     {
-        tooltips.RemoveAll(t => tooltipNames.Contains(t.Name));
+        foreach (var tooltip in tooltips)
+        {
+            if (tooltipNames.Contains(tooltip.Name))
+                tooltip.Hide();
+        }
     }
 
     /// <summary>

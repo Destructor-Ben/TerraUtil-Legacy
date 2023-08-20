@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TerraUtil\TerraUtil.csproj" />
+    <!--<PackageReference Include="Solaestas.tModLoader.ModBuilder" Version="1.2" />-->
   </ItemGroup>
 
   <Target Name="BeforeBuild" Condition="$(IncludeTerraUtil)">

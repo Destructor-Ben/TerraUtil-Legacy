@@ -8,11 +8,6 @@ public static partial class Util
 {
     internal static Mod Mod { get; private set; }
 
-    // TODO: automatically append dllReferences to build.txt
-    // TODO: make paths more relative to the current project instead of hardcoded
-    // TODO: make all mods localization keys and asset paths less generic, and have paths like UI and Game in them
-    // TODO: IInstanced interface?
-
     /// <summary>
     /// Call this in a mods constructor to initialize TerraUtil
     /// </summary>
@@ -20,6 +15,8 @@ public static partial class Util
     public static void Load(Mod mod)
     {
         Mod = mod;
+
+        TileId = typeof(Tile).GetField("TileId");
     }
 
     /// <summary>

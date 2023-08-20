@@ -23,7 +23,7 @@ public static partial class Util
     /// <returns></returns>
     public static RecipeGroup RegisterRecipeGroup(string internalName, int itemIcon, params int[] itemIds)
     {
-        var group = new RecipeGroup(() => GetTextValue($"RecipeGroups.{internalName}.Tooltip"), itemIds)
+        var group = new RecipeGroup(() => GetTextValue($"RecipeGroups.{internalName}"), itemIds)
         {
             IconicItemId = itemIcon
         };

@@ -21,6 +21,6 @@ public static partial class Util
     /// <returns></returns>
     public static Asset<Texture2D> GetTexture(string name, bool loadAsync = true)
     {
-        return GetAsset<Texture2D>($"Textures/{name}", loadAsync);
+        return GetAsset<Texture2D>($"Textures/{name.Replace('.', '/')}", loadAsync);
     }
 }

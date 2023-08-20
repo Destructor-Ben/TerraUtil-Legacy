@@ -32,4 +32,30 @@ public static partial class Util
     {
         return value - value % nearest;
     }
+
+    // TODO: documentation
+    public static float Smoothstep(float x, float edge0 = 0f, float edge1 = 1f)
+    {
+        x = MathHelper.Clamp((x - edge0) / (edge1 - edge0), edge0, edge1);
+        return x * x * (3f - 2f * x);
+    }
+
+    public static float Smootherstep(float x, float edge0 = 0f, float edge1 = 1f)
+    {
+        x = MathHelper.Clamp((x - edge0) / (edge1 - edge0), edge0, edge1);
+        return x * x * x * (x * (x * 6f - 15f) + 10f);
+    }
+
+    public static float EaseIn(float x, float edge0 = 0f, float edge1 = 1f)
+    {
+        x = MathHelper.Clamp((x - edge0) / (edge1 - edge0), edge0, edge1);
+        return 2 * x * x;
+    }
+
+    public static float EaseOut(float x, float edge0 = 0f, float edge1 = 1f)
+    {
+        x = MathHelper.Clamp((x - edge0) / (edge1 - edge0), edge0, edge1);
+        x -= 0.5f;
+        return 2 * x * (edge1 - x) + 0.5f;
+    }
 }
