@@ -10,7 +10,7 @@ internal class RecipeGroupSystem : TerraUtilLoader<ModRecipeGroup>// TODO: test
                 IconicItemId = modGroup.ItemIconID
             };
 
-            RecipeGroup.RegisterGroup(Mod.Name + ":" + Name, group);
+            RecipeGroup.RegisterGroup(Mod.Name + ":" + modGroup.Name, group);
             modGroup.Group = group;
         }
     }
