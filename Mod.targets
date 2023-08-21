@@ -11,8 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="TerraUtil" />
-    <Using Include="TerraUtil.Utilities" />
     <Using Include="$(AssemblyName).Configuration" />
   </ItemGroup>
 

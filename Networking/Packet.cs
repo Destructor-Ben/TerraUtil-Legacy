@@ -92,7 +92,7 @@ public abstract class Packet : TerraUtilModType
         if (Util.IsSingleplayer)
             return;
         // TODO: have NetID sendtype in send, and also allow clients to see who the packet actually came from insteaf of just the server
-        OnSend(Util.IsClient ? null : Util.ClientID(toWho));
+        OnSend(Util.IsClient ? null : Util.MachineID(toWho));
         packet.Send(toWho, ignoreWho);
     }
 
@@ -242,7 +242,7 @@ public abstract class Packet : TerraUtilModType
     /// <param name="sender"></param>
     public static void HandlePacket(BinaryReader reader, int sender)
     {
-        int? fromWho = Util.ClientID(sender);
+        int? fromWho = Util.MachineID(sender);
         int id = reader.ReadInt32();
 
         var packet = packets[id];
@@ -304,7 +304,7 @@ public abstract class Packet : TerraUtilModType
             for (int i = 0; i < numClients; i++)
             {
                 int toWho = reader.ReadInt32();
-                if (Util.ClientID(toWho) == fromWho)
+                if (Util.MachineID(toWho) == fromWho)
                     continue;
 
                 // Sending new packet
@@ -354,7 +354,7 @@ public abstract class Packet : TerraUtilModType
 
     private void HandleFromTarget()
     {
-        Handle(Util.ClientID(Main.myPlayer));
+        Handle(Util.MachineID(Main.myPlayer));
     }
 
     #endregion

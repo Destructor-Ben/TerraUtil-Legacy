@@ -16,6 +16,8 @@
     <Using Include="Terraria.ID" />
     <Using Include="Terraria.Localization" />
     <Using Include="Terraria.ModLoader" />
+    <Using Include="TerraUtil" />
+    <Using Include="TerraUtil.Utilities" />
   </ItemGroup>
 
   <ItemGroup>

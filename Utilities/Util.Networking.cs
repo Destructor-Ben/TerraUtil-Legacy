@@ -2,46 +2,46 @@
 public static partial class Util
 {
     /// <summary>
-    /// If the local player is in singleplayer
+    /// If the current game session is in singleplayer.
     /// </summary>
     public static bool IsSingleplayer => Main.netMode == NetmodeID.SinglePlayer;
 
     /// <summary>
-    /// If the local player is a client or server
+    /// If the current game session is a client or server.
     /// </summary>
     public static bool IsMultiplayer => IsClient || IsServer;
 
     /// <summary>
-    /// If the local machines is a dedicated server
+    /// If the local machine is a dedicated server.
     /// </summary>
     public static bool IsHeadless => Main.dedServ;
 
     /// <summary>
-    /// If the local player is a multiplayer client
+    /// If the local machine is a multiplayer client.
     /// </summary>
     public static bool IsClient => Main.netMode == NetmodeID.MultiplayerClient;
 
     /// <summary>
-    /// If the local player is a server
+    /// If the local machine is a server.
     /// </summary>
     public static bool IsServer => Main.netMode == NetmodeID.Server;
 
     /// <summary>
-    /// Returns true if the sender ID is the server
+    /// Gets if the given ID is the server.
     /// </summary>
-    /// <param name="whoAmI"></param>
-    /// <returns></returns>
+    /// <param name="whoAmI">The ID to check.</param>
+    /// <returns><see langword="true"/> if <paramref name="whoAmI"/> is 255 or -1, else <see langword="false"/>.</returns>
     public static bool IsServerID(int whoAmI)
     {
         return whoAmI is 255 or -1;
     }
 
     /// <summary>
-    /// Returns null if the ID is the server, otherwise it is the whoAmI of a client
+    /// Gets the net ID of a machine.
     /// </summary>
-    /// <param name="whoAmI"></param>
-    /// <returns></returns>
-    public static int? ClientID(int whoAmI)
+    /// <param name="whoAmI">The ID of the machine.</param>
+    /// <returns><see langword="null"/> if <paramref name="whoAmI"/> is the server, otherwise the whoAmI of a client.</returns>
+    public static int? MachineID(int whoAmI)
     {
         return IsServerID(whoAmI) ? null : whoAmI;
     }

@@ -1,13 +1,12 @@
 ﻿using TerraUtil.Networking;
-using TerraUtil.Utilities;
 
 namespace TerraUtil;
 /// <summary>
-/// Functions as a mod class but integrates TerraUtil loading into it.
+/// Functions as the base <see cref="Mod"/> class but integrates TerraUtil loading into it.
 /// </summary>
 public class TerraUtilMod : Mod
 {
-    // Have to use constructor, because Load isn't called before all other content
+    // Have to use constructor because Load isn't called before all other content
     public TerraUtilMod()
     {
         Util.Load(this);

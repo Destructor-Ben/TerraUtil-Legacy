@@ -2,24 +2,23 @@
 public static partial class Util
 {
     /// <summary>
-    /// Finds the index of the tooltip name
+    /// Finds the index of <paramref name="tooltipName"/> in <paramref name="tooltips"/>.
     /// </summary>
-    /// <param name="tooltipName"></param>
-    /// <param name="tooltips"></param>
-    /// <returns></returns>
+    /// <param name="tooltips">The list of tooltips to search through.</param>
+    /// <param name="tooltipName">The tooltipname to find.</param>
+    /// <returns>The index of <paramref name="tooltipName"/> in <paramref name="tooltips"/> if it is found, otherwise -1.</returns>
     public static int FindIndexOfTooltipName(this List<TooltipLine> tooltips, string tooltipName)
     {
         return tooltips.IndexOf(tooltips.Where(t => t.Name == tooltipName).FirstOrDefault());
     }
 
     /// <summary>
-    /// Inserts the tooltips before or after the specified tooltip name
+    /// Inserts <paramref name="tooltipsToInsert"/> before or after the <paramref name="name"/> in <paramref name="tooltips"/>.
     /// </summary>
-    /// <param name="tooltips"></param>
-    /// <param name="name"></param>
-    /// <param name="after"></param>
-    /// <param name="tooltipsToInsert"></param>
-    /// <returns></returns>
+    /// <param name="tooltips">The tooltips list to insert into.</param>
+    /// <param name="name">The tooltip name to insert around.</param>
+    /// <param name="after">Whether the tooltips should be inserted before or after <paramref name="name"/>.</param>
+    /// <param name="tooltipsToInsert">The tooltips to insert.</param>
     public static void InsertTooltips(this List<TooltipLine> tooltips, string name, bool after, params TooltipLine[] tooltipsToInsert)
     {
         int index = tooltips.FindIndexOfTooltipName(name);
@@ -30,10 +29,10 @@ public static partial class Util
     }
 
     /// <summary>
-    /// Removes the list of tooltips
+    /// Hides all <paramref name="tooltipNames"/> found in <paramref name="tooltips"/>.
     /// </summary>
-    /// <param name="tooltips"></param>
-    /// <param name="tooltipNames"></param>
+    /// <param name="tooltips">The tooltips that will be modified.</param>
+    /// <param name="tooltipNames">The tooltip names to hide.</param>
     public static void RemoveTooltips(this List<TooltipLine> tooltips, params string[] tooltipNames)
     {
         foreach (var tooltip in tooltips)
@@ -44,11 +43,11 @@ public static partial class Util
     }
 
     /// <summary>
-    /// Returns a localized tooltipline
+    /// Gets a localized <see cref="TooltipLine"/>.
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="stringFormat"></param>
-    /// <returns></returns>
+    /// <param name="name">The name of the <see cref="TooltipLine"/>.</param>
+    /// <param name="stringFormat">String format arguments for the tooltip.</param>
+    /// <returns>A <see cref="TooltipLine"/> that has the given <paramref name="name"/> and an automatic key such as <c>Mods.{ModName}.Tooltips.{TooltipName}</c>.</returns>
     public static TooltipLine GetTooltipLine(string name, params object[] stringFormat)
     {
         return new TooltipLine(Mod, Mod.Name + ":" + name, GetTextValue("Tooltips." + name, stringFormat));

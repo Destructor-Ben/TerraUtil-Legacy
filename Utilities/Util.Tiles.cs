@@ -1,11 +1,6 @@
-﻿using System.Reflection;
-using Terraria.ID;
-
-namespace TerraUtil.Utilities;
+﻿namespace TerraUtil.Utilities;
 public static partial class Util
 {
-    internal static FieldInfo TileId;
-
     /// <summary>
     /// Retrieves the tile at the location of <paramref name="point"/> in tile coordinates.
     /// </summary>
@@ -24,19 +19,5 @@ public static partial class Util
     public static Tile ToTile(this Vector2 vector)
     {
         return ToTile(vector.ToTileCoordinates());
-    }
-
-    // TODO: finish
-    // id = y + x * height
-    // y = id - (x * height)
-    // x = (id - y)/height
-    public static ushort X(this Tile tile)
-    {
-        return (ushort)((uint)TileId.GetValue(tile) / Main.tile.Width - Main.tile.Height);
-    }
-
-    public static ushort Y(this Tile tile)
-    {
-        return (ushort)((uint)TileId.GetValue(tile) / Main.tile.Width - Main.tile.Height);
     }
 }

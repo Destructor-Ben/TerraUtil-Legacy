@@ -3,7 +3,7 @@ using Terraria.ModLoader.Config;
 
 namespace TerraUtil.Configuration;
 /// <summary>
-/// Provides an abstraction for mod configs.
+/// A variant of <see cref="ModConfig"/> that automatically implements recursive <see cref="ModConfig.NeedsReload(ModConfig)"/>.
 /// </summary>
 public abstract class ModConfiguration : ModConfig
 {

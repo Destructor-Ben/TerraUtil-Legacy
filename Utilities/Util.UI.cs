@@ -7,32 +7,37 @@ namespace TerraUtil.Utilities;
 public static partial class Util
 {
     /// <summary>
-    /// A Vector2 representing the size of the screen
+    /// A <see cref="Vector2"/> representing the size of the screen.
     /// </summary>
     public static Vector2 ScreenSize => Main.ScreenSize.ToVector2();
 
     /// <summary>
-    /// A Vector2 representing the position of the screen
+    /// A <see cref="Vector2"/> representing the position of the screen.
     /// </summary>
     public static Vector2 ScreenPos => Main.screenPosition;
 
     /// <summary>
-    /// A Vector2 representing the centre of the screen
-    /// </summary>
-    public static Vector2 ScreenCenter => Screen.Center.ToVector2();
-
-    /// <summary>
-    /// A rectangle representing the screens position and size
+    /// A <see cref="Rectangle"/> representing the screen's position and size.
     /// </summary>
     public static Rectangle Screen => new Rectangle((int)ScreenPos.X, (int)ScreenPos.Y, (int)ScreenSize.X, (int)ScreenSize.Y);
 
     /// <summary>
-    /// The position of the mouse on the screen
+    /// A <see cref="Vector2"/> representing the centre of the screen.
+    /// </summary>
+    public static Vector2 ScreenCenter => ScreenSize / 2f;
+
+    /// <summary>
+    /// A <see cref="Vector2"/> representing the centre of the screen in world coordinates.
+    /// </summary>
+    public static Vector2 ScreenWorldCenter => Screen.Center.ToVector2();
+
+    /// <summary>
+    /// The position of the mouse on the screen.
     /// </summary>
     public static Vector2 MousePos => Main.MouseScreen;
 
     /// <summary>
-    /// The position of the mouse in the world
+    /// The position of the mouse in the world.
     /// </summary>
     public static Vector2 MouseWorld => Main.MouseWorld;
 
@@ -62,10 +67,10 @@ public static partial class Util
     public static bool X2Click => Main.mouseXButton2 && Main.mouseXButton2Release;
 
     /// <summary>
-    /// Sets the mouse text
+    /// Sets the mouse text.
     /// </summary>
-    /// <param name="text"></param>
-    /// <param name="tooltip"></param>
+    /// <param name="text">The text to display as a tooltip.</param>
+    /// <param name="tooltip">Whether a background should be shown for the tooltip.</param>
     public static void MouseText(string text, bool tooltip = false)
     {
         if (tooltip)
@@ -75,7 +80,7 @@ public static partial class Util
     }
 
     /// <summary>
-    /// Disables all mouse text.
+    /// Resets all mouse text for this frame.
     /// </summary>
     public static void ResetMouseText()
     {
@@ -87,7 +92,7 @@ public static partial class Util
         Main.mouseText = false;
     }
 
-    // TODO: test the WithHoverX methods
+    // TODO: Remove these when UIButton is added to tML
     /// <summary>
     /// Makes the specified element display the specified mouse text when hovered over.
     /// </summary>

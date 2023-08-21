@@ -4,9 +4,10 @@ using Terraria.ModLoader.Config.UI;
 
 namespace TerraUtil.Configuration;
 /// <summary>
-/// Provides an abstraction for a sub config
+/// A type that can be extended from to make a sub-config.<br/>
+/// Automatically implements <see cref="object.Equals(object?)"/> and <see cref="object.GetHashCode"/>.
 /// </summary>
-public class SubConfig
+public abstract class SubConfig
 {
     public override bool Equals(object obj)
     {
