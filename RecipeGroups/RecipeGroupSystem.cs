@@ -1,5 +1,5 @@
 ﻿namespace TerraUtil.RecipeGroups;
-internal class RecipeGroupSystem : TerraUtilLoader<ModRecipeGroup>// TODO: test
+internal class RecipeGroupSystem : TerraUtilLoader<ModRecipeGroup>
 {
     public override void AddRecipeGroups()
     {
