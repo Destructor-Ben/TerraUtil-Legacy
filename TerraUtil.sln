@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33717.318
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TerraUtil", "TerraUtil.csproj", "{884DF3CC-447E-480A-A814-E6167894393F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{884DF3CC-447E-480A-A814-E6167894393F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{884DF3CC-447E-480A-A814-E6167894393F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{884DF3CC-447E-480A-A814-E6167894393F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{884DF3CC-447E-480A-A814-E6167894393F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5A0486FE-7547-4882-A375-2B559EF7E85F}
+	EndGlobalSection
+EndGlobal
