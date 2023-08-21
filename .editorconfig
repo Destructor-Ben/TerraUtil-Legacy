@@ -104,7 +104,7 @@ csharp_style_conditional_delegate_call = true:suggestion
 # Modifier preferences
 csharp_prefer_static_local_function = false:suggestion
 csharp_preferred_modifier_order = public,private,protected,internal,file,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,required,volatile,async
-csharp_style_prefer_readonly_struct = true:suggestion
+csharp_style_prefer_readonly_struct = false:suggestion
 
 # Code-block preferences
 csharp_prefer_braces = when_multiline:suggestion
@@ -116,7 +116,7 @@ csharp_style_prefer_top_level_statements = true:silent
 # Expression-level preferences
 csharp_prefer_simple_default_expression = true:suggestion
 csharp_style_deconstructed_variable_declaration = true:suggestion
-csharp_style_implicit_object_creation_when_type_is_apparent = false:suggestion
+csharp_style_implicit_object_creation_when_type_is_apparent = true:suggestion
 csharp_style_inlined_variable_declaration = true:suggestion
 csharp_style_prefer_index_operator = true:suggestion
 csharp_style_prefer_local_over_anonymous_function = true:suggestion
@@ -125,8 +125,8 @@ csharp_style_prefer_range_operator = true:suggestion
 csharp_style_prefer_tuple_swap = true:suggestion
 csharp_style_prefer_utf8_string_literals = true:suggestion
 csharp_style_throw_expression = true:suggestion
-csharp_style_unused_value_assignment_preference = discard_variable:silent
-csharp_style_unused_value_expression_statement_preference = discard_variable:silent
+csharp_style_unused_value_assignment_preference = discard_variable:suggestion
+csharp_style_unused_value_expression_statement_preference = discard_variable:none
 
 # 'using' directive preferences
 csharp_using_directive_placement = outside_namespace:suggestion
@@ -242,9 +242,12 @@ dotnet_diagnostic.IDE0002.severity = suggestion
 
 # IDE0007: Use implicit type
 dotnet_diagnostic.IDE0007.severity = suggestion
-csharp_style_prefer_readonly_struct_member = true:suggestion
-csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = true:silent
-csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = true:silent
+csharp_style_prefer_readonly_struct_member = false:suggestion
+csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = true:suggestion
+csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = true:suggestion
+
+# IDE0058: Expression value is never used
+dotnet_diagnostic.IDE0058.severity = none
 
 [*.{cs,vb}]
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
@@ -277,7 +280,9 @@ dotnet_style_parentheses_in_arithmetic_binary_operators = never_if_unnecessary:s
 dotnet_style_parentheses_in_other_binary_operators = never_if_unnecessary:suggestion
 dotnet_style_parentheses_in_relational_binary_operators = never_if_unnecessary:suggestion
 dotnet_style_parentheses_in_other_operators = never_if_unnecessary:suggestion
-dotnet_style_qualification_for_field = false:silent
+dotnet_style_qualification_for_field = false:suggestion
 dotnet_style_qualification_for_property = false:suggestion
 dotnet_style_qualification_for_method = false:suggestion
 dotnet_style_qualification_for_event = false:suggestion
+insert_final_newline = true
+dotnet_diagnostic.IDE0059.severity = none
