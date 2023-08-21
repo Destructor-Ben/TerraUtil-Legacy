@@ -1,13 +1,25 @@
 ﻿namespace TerraUtil.Edits;
-public abstract class Detour : TerraUtilModType
+/// <summary>
+/// An abstraction of a detour.
+/// </summary>
+public abstract class Detour : ILoadable
 {
-    protected sealed override void Register() { }
+    /// <inheritdoc cref="ModType.Mod"/>
+    public Mod Mod { get; internal set; }
 
-    public sealed override void SetupContent()
+    public void Load(Mod mod)
     {
+        Mod = mod;
         Apply();
-        SetStaticDefaults();
     }
 
+    public void Unload()
+    {
+        Mod = null;
+    }
+
+    /// <summary>
+    /// This is where you will apply your detour in the usual way.
+    /// </summary>
     public abstract void Apply();
 }
