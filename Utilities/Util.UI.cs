@@ -19,7 +19,7 @@ public static partial class Util
     /// <summary>
     /// A <see cref="Rectangle"/> representing the screen's position and size.
     /// </summary>
-    public static Rectangle Screen => new Rectangle((int)ScreenPos.X, (int)ScreenPos.Y, (int)ScreenSize.X, (int)ScreenSize.Y);
+    public static Rectangle Screen => new((int)ScreenPos.X, (int)ScreenPos.Y, (int)ScreenSize.X, (int)ScreenSize.Y);
 
     /// <summary>
     /// A <see cref="Vector2"/> representing the centre of the screen.

@@ -1,5 +1,4 @@
 ﻿using Terraria.UI;
-using TerraUtil.Utilities;
 
 namespace TerraUtil.UI;
 /// <summary>
