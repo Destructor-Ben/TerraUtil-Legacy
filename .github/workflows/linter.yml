@@ -1,0 +1,40 @@
+name: .NET Linter
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Pull tML
+      run: |
+        cd ..
+        mkdir ./tmod
+        touch tModLoader.targets
+        
+        echo '<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+            <Import Project=".\tmod\tMLMod.targets" />
+        </Project>' > tModLoader.targets
+        
+        cd ./tmod
+        wget https://github.com/tModLoader/tModLoader/releases/latest/download/tModLoader.zip
+        unzip tModLoader.zip
+        cd ..
+        cd ./TerraUtil
+        
+      
+    - name: Lint
+      run: dotnet format style TerraUtil.csproj --verify-no-changes
