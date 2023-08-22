@@ -37,4 +37,4 @@ jobs:
         
       
     - name: Lint
-      run: dotnet format style TerraUtil.csproj --verify-no-changes
+      run: dotnet format TerraUtil.csproj --verify-no-changes
