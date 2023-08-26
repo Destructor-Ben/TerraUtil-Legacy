@@ -2,8 +2,7 @@
 
 namespace TerraUtil.UI;
 /// <summary>
-/// Provides an abstraction for UserInterface and UIState.<br/>
-/// Shamelessly stolen from Starlight River.
+/// Provides an abstraction for a <see cref="Terraria.UI.UserInterface"/> and <see cref="UIState"/>.
 /// </summary>
 public abstract class Interface : UIState, ILoadable, IModType
 {
@@ -17,9 +16,7 @@ public abstract class Interface : UIState, ILoadable, IModType
 
     void ILoadable.Load(Mod mod)
     {
-        UISystem.Interfaces ??= new();
-        UISystem.Interfaces.Add(this);
-        ModTypeLookup<Interface>.Register(this);
+        UISystem.Instance.AddContent(this);
         Load();
     }
 
@@ -33,36 +30,41 @@ public abstract class Interface : UIState, ILoadable, IModType
     #region Implementation
 
     /// <summary>
-    /// The internal UserInterface that this Interface uses
+    /// The internal <see cref="Terraria.UI.UserInterface"/> that this <see cref="Interface"/> uses.
     /// </summary>
     public UserInterface UserInterface { get; internal set; }
 
     /// <summary>
-    /// Whether the UserInterface should draw and update
+    /// Whether <see cref="UserInterface"/> should draw.
     /// </summary>
     public virtual bool Visible { get; set; } = true;
 
     /// <summary>
-    /// The scaling type of the UserInterface.<br/>
+    /// Whether <see cref="UserInterface"/> should update.
+    /// </summary>
+    public virtual bool ShouldUpdate { get; set; } = true;
+
+    /// <summary>
+    /// The <see cref="InterfaceScaleType"/> of <see cref="UserInterface"/>.<br/>
     /// By default is <see cref="InterfaceScaleType.UI"/>.
     /// </summary>
     public virtual InterfaceScaleType ScaleType => InterfaceScaleType.UI;
 
     /// <summary>
-    /// Returns the index that the layer should be inserted in the list of game interface layers.<br/>
+    /// Returns the index that this <see cref="UserInterface"/> should be inserted in <paramref name="layers"/>.<br/>
     /// Return -1 if you don't want to insert it.
     /// </summary>
-    /// <param name="layers"></param>
-    /// <returns></returns>
+    /// <param name="layers">The <see cref="List{T}"/> of <see cref="GameInterfaceLayer"/>s to be drawn.</param>
+    /// <returns>The layer index to insert at.</returns>
     public abstract int GetLayerInsertIndex(List<GameInterfaceLayer> layers);
 
     /// <summary>
-    /// Called when the UserInterface loads.
+    /// Called when <see cref="UserInterface"/> is loaded.
     /// </summary>
     public virtual void Load() { }
 
     /// <summary>
-    /// Called when the UserInterface unloads.
+    /// Called when <see cref="UserInterface"/> is unloaded.
     /// </summary>
     public virtual void Unload() { }
 
@@ -76,17 +78,18 @@ public abstract class Interface : UIState, ILoadable, IModType
     }
 
     /// <summary>
-    /// Called when the UI is opened.
+    /// Called when the UI is activated.
     /// </summary>
     public virtual void SafeOnActivate() { }
 
     /// <summary>
-    /// Called when the UI should be initialized.
+    /// Override this to initialie your UI and any data you might want to store.
     /// </summary>
     protected virtual void CreateUI() { }
 
     /// <summary>
-    /// Called when the UI is destroyed.
+    /// Override this to unload any data that you might have stored.<br/>
+    /// All UI has already been removed when this is called. Make sure to use null checks.
     /// </summary>
     protected virtual void ResetUI() { }
 

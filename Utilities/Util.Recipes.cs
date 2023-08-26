@@ -22,7 +22,7 @@ public static partial class Util
     /// <typeparam name="T">The <see cref="ModRecipeGroup"/>.</typeparam>
     /// <param name="recipe">The recipe to add the group to.</param>
     /// <param name="stack">The amount of the recipe group to add.</param>
-    /// <returns>The given recipe for chaining.</returns>
+    /// <returns>The given recipe to allow for chaining.</returns>
     public static Recipe AddRecipeGroup<T>(this Recipe recipe, int stack = 1) where T : ModRecipeGroup
     {
         recipe.AddRecipeGroup(ModContent.GetInstance<T>().Group, stack);

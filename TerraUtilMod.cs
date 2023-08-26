@@ -24,6 +24,6 @@ public class TerraUtilMod : Mod
 
     public override void HandlePacket(BinaryReader reader, int whoAmI)
     {
-        Packet.HandlePacket(reader, whoAmI);
+        PacketSystem.HandlePacket(reader, whoAmI);
     }
 }

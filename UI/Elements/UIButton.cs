@@ -2,6 +2,7 @@
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
+// TODO: Removes this once UIBUtton is added to tML
 namespace TerraUtil.UI.Elements;
 /// <summary>
 /// A text panel that supports hover and click sounds, hover colours, and alternate colours.

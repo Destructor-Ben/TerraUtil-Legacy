@@ -21,7 +21,7 @@ public abstract class ModRecipeGroup : TerraUtilModType
 
     protected sealed override void Register()
     {
-        RecipeGroupSystem.AddContent(this);
+        RecipeGroupSystem.Instance.AddContent(this);
     }
 
     public sealed override void SetupContent()

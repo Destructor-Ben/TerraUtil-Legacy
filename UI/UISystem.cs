@@ -1,35 +1,26 @@
 ﻿using Terraria.UI;
 
 namespace TerraUtil.UI;
-internal class UISystem : ModSystem
+public class UISystem : TerraUtilLoader<Interface>
 {
-    public static List<Interface> Interfaces;
-
-    public override void SetStaticDefaults()
+    public override void AddContent(Interface content)
     {
         if (Util.IsHeadless)
             return;
 
-        foreach (var ui in Interfaces)
-        {
-            ui.UserInterface = new UserInterface();
-            ui.UserInterface.SetState(ui);
-            ui.Activate();
-        }
-    }
-
-    public override void Unload()
-    {
-        Interfaces = null;
+        base.AddContent(content);
+        content.UserInterface = new UserInterface();
+        content.UserInterface.SetState(content);
+        content.Activate();
     }
 
     public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
     {
-        foreach (var ui in Interfaces)
-        {
-            if (!ui.Visible)
-                return;
+        if (Util.IsHeadless)
+            return;
 
+        foreach (var ui in Content)
+        {
             int index = ui.GetLayerInsertIndex(layers);
             if (index == -1)
                 return;
@@ -38,6 +29,8 @@ internal class UISystem : ModSystem
                 Util.Mod.Name + ": " + ui.Name,
                 delegate
                 {
+                    if (!ui.Visible)
+                        return true;
                     ui.UserInterface?.Draw(Main.spriteBatch, null);
                     return true;
                 },
@@ -48,12 +41,13 @@ internal class UISystem : ModSystem
 
     public override void UpdateUI(GameTime gameTime)
     {
-        foreach (var ui in Interfaces)
-        {
-            if (!ui.Visible)
-                return;
+        if (Util.IsHeadless)
+            return;
 
-            ui.UserInterface?.Update(gameTime);
+        foreach (var ui in Content)
+        {
+            if (ui.ShouldUpdate)
+                ui.UserInterface?.Update(gameTime);
         }
     }
 }

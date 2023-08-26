@@ -1,5 +1,4 @@
 ﻿using Terraria.Audio;
-using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 
@@ -92,15 +91,14 @@ public static partial class Util
         Main.mouseText = false;
     }
 
-    // TODO: Remove these when UIButton is added to tML
     /// <summary>
     /// Makes the specified element display the specified mouse text when hovered over.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="element"></param>
-    /// <param name="text"></param>
-    /// <param name="tooltip"></param>
-    /// <returns></returns>
+    /// <typeparam name="T">The type of <paramref name="element"/>.</typeparam>
+    /// <param name="element">The <see cref="UIElement"/> to display the hover text when hovering over.</param>
+    /// <param name="text">The hover text to display.</param>
+    /// <param name="tooltip">Whether a tooltip background should be displayed.</param>
+    /// <returns><paramref name="element"/> to allow for chaining.</returns>
     public static T WithHoverText<T>(this T element, string text, bool tooltip = false) where T : UIElement
     {
         element.OnUpdate += delegate (UIElement affectedElement)
@@ -113,101 +111,28 @@ public static partial class Util
     }
 
     /// <summary>
-    /// Makes the specified UIPanel change it's colours when hovered over.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="element"></param>
-    /// <param name="panelCol"></param>
-    /// <param name="panelHoverCol"></param>
-    /// <param name="borderCol"></param>
-    /// <param name="borderHoverCol"></param>
-    /// <param name="useAlternateColours"></param>
-    /// <param name="panelAltCol"></param>
-    /// <param name="panelHoverAltCol"></param>
-    /// <param name="borderAltCol"></param>
-    /// <param name="borderHoverAltCol"></param>
-    /// <returns></returns>
-    public static T WithHoverColours<T>(
-        this T element,
-        Color panelCol = default,
-        Color panelHoverCol = default,
-        Color borderCol = default,
-        Color borderHoverCol = default,
-        Func<bool> useAlternateColours = default,
-        Color panelAltCol = default,
-        Color panelHoverAltCol = default,
-        Color borderAltCol = default,
-        Color borderHoverAltCol = default
-        ) where T : UIPanel
-    {
-        // Set the normal and hover colours to the ones that are used by UICommon.WithFadedMouseOver
-        if (panelCol == default)
-            panelCol = UICommon.DefaultUIBlueMouseOver;
-        if (panelHoverCol == default)
-            panelHoverCol = UICommon.DefaultUIBlue;
-        if (borderCol == default)
-            borderCol = UICommon.DefaultUIBorder;
-        if (borderHoverCol == default)
-            borderHoverCol = UICommon.DefaultUIBorderMouseOver;
-
-        // If useAlternateColours hasn't been specified, then set it to always return false
-        if (useAlternateColours == default)
-            useAlternateColours = () => false;
-
-        // Set the alternate colours to the normal ones if they aren't specified
-        if (panelAltCol == default)
-            panelAltCol = panelCol;
-        if (panelHoverAltCol == default)
-            panelHoverAltCol = panelHoverCol;
-        if (borderAltCol == default)
-            borderAltCol = borderCol;
-        if (borderHoverAltCol == default)
-            borderHoverAltCol = borderHoverCol;
-
-        // Updating
-        element.OnUpdate += delegate (UIElement affectedElement)
-        {
-            bool altCols = useAlternateColours();
-            if (element.IsMouseHovering)
-            {
-                element.BackgroundColor = altCols ? panelAltCol : panelCol;
-                element.BorderColor = altCols ? borderAltCol : borderCol;
-            }
-            else
-            {
-                element.BackgroundColor = altCols ? panelHoverAltCol : panelHoverCol;
-                element.BorderColor = altCols ? borderHoverAltCol : borderHoverCol;
-            }
-        };
-
-        return element;
-    }
-
-    /// <summary>
     /// Makes the specified element play sounds when clicked or hovered over.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="element"></param>
-    /// <param name="hoverSound"></param>
-    /// <param name="clickSound"></param>
-    /// <returns></returns>
-    public static T WithHoverSounds<T>(this T element, SoundStyle hoverSound, SoundStyle? clickSound = null) where T : UIElement
+    /// <typeparam name="T">The type of <paramref name="element"/>.</typeparam>
+    /// <param name="element">The <see cref="UIElement"/> to play hover sounds when interacted with.</param>
+    /// <param name="hoverSound">The <see cref="SoundStyle"/> to play when this element is hovered over.</param>
+    /// <param name="clickSound">The <see cref="SoundStyle"/> to play when this element is left clicked.</param>
+    /// <returns><paramref name="element"/> to allow for chaining.</returns>
+    public static T WithHoverSounds<T>(this T element, SoundStyle? hoverSound = null, SoundStyle? clickSound = null) where T : UIElement
     {
         // Hover sound
-        // TODO: stop children elements from triggering it
         element.OnMouseOver += delegate (UIMouseEvent evt, UIElement listeningElement)
         {
-            SoundEngine.PlaySound(hoverSound);
+            if (hoverSound != null)
+                SoundEngine.PlaySound(hoverSound.Value);
         };
 
         // Click sound
-        if (clickSound != null)
+        element.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement)
         {
-            element.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement)
-            {
+            if (clickSound != null)
                 SoundEngine.PlaySound(clickSound.Value);
-            };
-        }
+        };
 
         return element;
     }

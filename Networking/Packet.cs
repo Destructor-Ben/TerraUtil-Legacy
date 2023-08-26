@@ -6,28 +6,20 @@ public abstract class Packet : TerraUtilModType
 {
     #region Setup
 
-    public int Type { get; private set; }
-
-    private static Dictionary<int, Packet> packets;
-    private static int idCounter;
-
-    public sealed override void Load()
+    internal enum SendType : byte
     {
-        idCounter = 0;
-        packets ??= new();
+        SendToServer,
+        SendToClient,
+        SendToClients,
+        SendToAllClients,
+        SendToAll,
     }
 
-    public sealed override void Unload()
-    {
-        packets = null;
-    }
+    public int Type { get; internal set; }
 
     protected sealed override void Register()
     {
-        Type = idCounter;
-        packets.Add(Type, this);
-        idCounter++;
-        ModTypeLookup<Packet>.Register(this);
+        PacketSystem.Instance.AddContent(this);
     }
 
     public sealed override void SetupContent()
@@ -35,72 +27,77 @@ public abstract class Packet : TerraUtilModType
         SetStaticDefaults();
     }
 
-    public sealed override void SetStaticDefaults()
-    {
-    }
-
     #endregion
 
     #region Public Stuff
 
     /// <summary>
-    /// If true and the current machine is the target of a packet, the packet will also be handled on that machine. Works in singleplayer.
+    /// If true and the current machine is the target of a packet, the packet will also be handled on that machine.<br/>
+    /// Works in singleplayer.
     /// </summary>
     public virtual bool HandleIfTarget => true;
 
     /// <summary>
-    /// Makes the packet do something when it has arrived
+    /// Makes the packet do something when it has arrived.
     /// </summary>
-    /// <param name="fromWho"></param>
+    /// <param name="fromWho"><see langword="null"/> if from the server, otherwise the whoAmI of a client.</param>
     public abstract void Handle(int? fromWho);
 
     /// <summary>
-    /// Called when the packet is about to be serialized
+    /// Called when the packet is about to be sent.
     /// </summary>
+    /// <param name="toWho"><see langword="null"/> if to the server, otherwise the whoAmI of a client.</param>
     public virtual void OnSend(int? toWho) { }
 
-    // TODO: automatic serialization
     /// <summary>
-    /// Serializes the packet data
+    /// Serialize the packet data in this method.
     /// </summary>
-    /// <param name="writer"></param>
+    /// <param name="writer">The <see cref="BinaryWriter"/> used to write the data.</param>
     public abstract void Serialize(BinaryWriter writer);
 
     /// <summary>
-    /// Deserializes the packet data
+    /// Deserialize the packet data in this method.
     /// </summary>
-    /// <param name="reader"></param>
+    /// <param name="reader">The <see cref="BinaryReader"/> used to read the data.</param>
     public abstract void Deserialize(BinaryReader reader);
 
     #endregion
 
     #region Sending
 
-    private ModPacket GetPacket(NetID sendType)
+    /// <summary>
+    /// Gets a <see cref="ModPacket"/> with it's type and data already written to it.
+    /// </summary>
+    /// <returns>A <see cref="ModPacket"/> with it's type and data written to it in that order.</returns>
+    internal ModPacket GetPacket()
     {
+        if (Util.IsSingleplayer)
+            return null;
+
         var packet = Mod.GetPacket();
         packet.Write(Type);
         Serialize(packet);
-        packet.Write((byte)sendType);
         return packet;
     }
 
-    private void Send(ModPacket packet, int toWho = -1, int ignoreWho = -1)
+    // Writes the specified sendtype to the packet and sends it
+    // TODO: allow clients to see the sender of a packet
+    internal void Send(ModPacket packet, SendType sendType, int toWho = -1, int ignoreWho = -1)
     {
         if (Util.IsSingleplayer)
             return;
-        // TODO: have NetID sendtype in send, and also allow clients to see who the packet actually came from insteaf of just the server
+
+        packet.Write((byte)sendType);
         OnSend(Util.IsClient ? null : Util.MachineID(toWho));
         packet.Send(toWho, ignoreWho);
     }
 
-    /// <summary>
-    /// Sends this packet to the server
+    /// <summary>   
+    /// Sends this packet to the server.
     /// </summary>
-    /// <param name="handleIfTarget"></param>
     public void SendToServer()
     {
-        if (Util.IsServer && HandleIfTarget)
+        if (Util.IsServer)
         {
             // Server handles the packet itself
             HandleFromTarget();
@@ -108,35 +105,33 @@ public abstract class Packet : TerraUtilModType
         else if (Util.IsClient)
         {
             // Send to server
-            var packet = GetPacket(NetID.SendToServer);
-            Send(packet);
+            var packet = GetPacket();
+            Send(packet, SendType.SendToServer);
         }
     }
 
     /// <summary>
-    /// Sends this packet to a specific client
+    /// Sends this packet to a specific client.
     /// </summary>
-    /// <param name="toWho"></param>
-    /// <param name="handleIfTarget"></param>
+    /// <param name="toWho">The whoAmI of the client to send this packet to.</param>
     public void SendToClient(int toWho)
     {
         if (Util.IsServer)
         {
             // Server sends the packet to the client
-            var packet = GetPacket(NetID.SendToClient);
-            Send(packet, toWho);
+            var packet = GetPacket();
+            Send(packet, SendType.SendToClient, toWho);
         }
-        else if (Util.IsClient && toWho == Main.myPlayer && HandleIfTarget)
+        else if (Util.IsClient && toWho == Main.myPlayer)
         {
-            // This is the target machine
             HandleFromTarget();
         }
         else if (Util.IsClient)
         {
             // Send packet to server so it can forward it
-            var packet = GetPacket(NetID.SendToClient);
+            var packet = GetPacket();
             packet.Write(toWho);
-            Send(packet);
+            Send(packet, SendType.SendToClient);
         }
     }
 
@@ -152,25 +147,24 @@ public abstract class Packet : TerraUtilModType
             // Server sends packets to the clients
             foreach (int client in toWho)
             {
-                var packet = GetPacket(NetID.SendToClients);
-                Send(packet, client);
+                var packet = GetPacket();
+                Send(packet, SendType.SendToClients, client);
             }
         }
-        else if (Util.IsClient && toWho.Contains(Main.myPlayer) && HandleIfTarget)
+        else if (Util.IsClient && toWho.Contains(Main.myPlayer))
         {
-            // If this is the target machine then handle it (not sending it is handled by the server)
             HandleFromTarget();
         }
         else if (Util.IsClient)
         {
             // Send packet to server so it can forward it
-            var packet = GetPacket(NetID.SendToClients);
+            var packet = GetPacket();
             packet.Write(toWho.Length);
             foreach (int client in toWho)
             {
                 packet.Write(client);
             }
-            Send(packet);
+            Send(packet, SendType.SendToClients);
         }
     }
 
@@ -183,21 +177,16 @@ public abstract class Packet : TerraUtilModType
         if (Util.IsServer)
         {
             // Server sends packets to all the clients
-            var packet = GetPacket(NetID.SendToAllClients);
-            packet.Send();
+            var packet = GetPacket();
+            Send(packet, SendType.SendToAllClients);
         }
         else if (Util.IsClient)
         {
-            // Handling if we want to
-            if (HandleIfTarget)
-            {
-                HandleFromTarget();
-                return;
-            }
+            HandleFromTarget();
 
             // Send packet to server so it can forward it to everyone
-            var packet = GetPacket(NetID.SendToAllClients);
-            Send(packet);
+            var packet = GetPacket();
+            Send(packet, SendType.SendToAllClients);
         }
     }
 
@@ -209,23 +198,19 @@ public abstract class Packet : TerraUtilModType
     {
         if (Util.IsServer)
         {
-            // Handling if we want to
-            if (HandleIfTarget)
-                HandleFromTarget();
+            HandleFromTarget();
 
             // Server sends packets to all the clients
-            var packet = GetPacket(NetID.SendToAll);
-            packet.Send();
+            var packet = GetPacket();
+            Send(packet, SendType.SendToAll);
         }
         else if (Util.IsClient)
         {
-            // Handling if we want to
-            if (HandleIfTarget)
-                HandleFromTarget();
+            HandleFromTarget();
 
             // Send packet to server so it can forward it to everyone
-            var packet = GetPacket(NetID.SendToAll);
-            Send(packet);
+            var packet = GetPacket();
+            Send(packet, SendType.SendToAll);
         }
     }
 
@@ -233,58 +218,20 @@ public abstract class Packet : TerraUtilModType
 
     #region Handling
 
-    /// <summary>
-    /// Call this in Mod.HandlePacket to enable custom packet handling
-    /// </summary>
-    /// <param name="reader"></param>
-    /// <param name="sender"></param>
-    public static void HandlePacket(BinaryReader reader, int sender)
-    {
-        int? fromWho = Util.MachineID(sender);
-        int id = reader.ReadInt32();
-
-        var packet = packets[id];
-        packet.Deserialize(reader);
-
-        // Handling for different send types
-        var sendType = (NetID)reader.ReadByte();
-        switch (sendType)
-        {
-            case NetID.SendToServer:
-                packet.HandleSendToServer(fromWho);
-                break;
-            case NetID.SendToClient:
-                packet.HandleSendToClient(reader, fromWho);
-                break;
-            case NetID.SendToClients:
-                packet.HandleSendToClients(reader, fromWho);
-                break;
-            case NetID.SendToAllClients:
-                packet.HandleSendToAllClients(fromWho);
-                break;
-            case NetID.SendToAll:
-                packet.HandleSendToAll(fromWho);
-                break;
-            default:
-                Mod.Logger.Warn("Unknown packet type: " + sendType.ToString());
-                break;
-        }
-    }
-
-    private void HandleSendToServer(int? fromWho)
+    internal void HandleSendToServer(int? fromWho)
     {
         if (Util.IsServer)
             Handle(fromWho);
     }
 
-    private void HandleSendToClient(BinaryReader reader, int? fromWho)
+    internal void HandleSendToClient(BinaryReader reader, int? fromWho)
     {
         if (Util.IsServer)
         {
             // Forward the packet
             int toWho = reader.ReadInt32();
-            var packet = GetPacket(NetID.SendToClient);
-            Send(packet, toWho);
+            var packet = GetPacket();
+            Send(packet, SendType.SendToClient, toWho);
         }
         else if (Util.IsClient)
         {
@@ -293,7 +240,7 @@ public abstract class Packet : TerraUtilModType
         }
     }
 
-    private void HandleSendToClients(BinaryReader reader, int? fromWho)
+    internal void HandleSendToClients(BinaryReader reader, int? fromWho)
     {
         if (Util.IsServer)
         {
@@ -306,8 +253,8 @@ public abstract class Packet : TerraUtilModType
                     continue;
 
                 // Sending new packet
-                var packet = GetPacket(NetID.SendToClients);
-                packet.Send(toWho);
+                var packet = GetPacket();
+                Send(packet, SendType.SendToClients, toWho);
             }
         }
         else if (Util.IsClient)
@@ -317,13 +264,13 @@ public abstract class Packet : TerraUtilModType
         }
     }
 
-    private void HandleSendToAllClients(int? fromWho)
+    internal void HandleSendToAllClients(int? fromWho)
     {
         if (Util.IsServer)
         {
             // Send a packet to everyone
-            var packet = GetPacket(NetID.SendToAllClients);
-            packet.Send(ignoreClient: fromWho ?? -1);
+            var packet = GetPacket();
+            Send(packet, SendType.SendToAllClients, ignoreWho: fromWho ?? -1);
         }
         else if (Util.IsClient)
         {
@@ -332,7 +279,7 @@ public abstract class Packet : TerraUtilModType
         }
     }
 
-    private void HandleSendToAll(int? fromWho)
+    internal void HandleSendToAll(int? fromWho)
     {
         if (Util.IsServer)
         {
@@ -340,8 +287,8 @@ public abstract class Packet : TerraUtilModType
             Handle(fromWho);
 
             // Send a packet to everyone
-            var packet = GetPacket(NetID.SendToAllClients);
-            packet.Send(ignoreClient: fromWho ?? -1);
+            var packet = GetPacket();
+            Send(packet, SendType.SendToAllClients, ignoreWho: fromWho ?? -1);
         }
         else if (Util.IsClient)
         {
@@ -350,9 +297,11 @@ public abstract class Packet : TerraUtilModType
         }
     }
 
-    private void HandleFromTarget()
+    // The handle function called if the machine is the target of a send method
+    internal void HandleFromTarget()
     {
-        Handle(Util.MachineID(Main.myPlayer));
+        if (HandleIfTarget)
+            Handle(Util.MachineID(Main.myPlayer));
     }
 
     #endregion
