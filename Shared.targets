@@ -5,7 +5,7 @@
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <!--<Nullable>enable</Nullable>-->
-    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <NoWarn>X4717;MSB3270;$(NoWarn)</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +19,23 @@
     <Using Include="Terraria.ModLoader" />
     <Using Include="TerraUtil" />
     <Using Include="TerraUtil.Utilities" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="**\*.xnb" />
+    <None Remove="**\*.fxb" />
+  </ItemGroup>
+
+  <!-- Grr, VS keeps making obj and bin folder appear -->
+  <ItemGroup>
+    <AdditionalFiles Remove="obj\**" />
+    <AdditionalFiles Remove="bin\**" />
+    <Compile Remove="obj\**" />
+    <Compile Remove="bin\**" />
+    <EmbeddedResource Remove="obj\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <None Remove="obj\**" />
+    <None Remove="bin\**" />
   </ItemGroup>
 
   <ItemGroup>

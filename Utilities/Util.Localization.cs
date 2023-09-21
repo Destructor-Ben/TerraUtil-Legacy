@@ -8,7 +8,7 @@ public static partial class Util
     /// <returns>A <see cref="LocalizedText"/> with the given key with <c>Mods.{ModName}.</c> prepended to it.</returns>
     public static LocalizedText GetText(string key)
     {
-        return Language.GetText($"Mods.{Mod.Name}.{key}");
+        return Language.GetOrRegister($"Mods.{Mod.Name}.{key}");
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public static partial class Util
         }
         catch (FormatException)
         {
-            Mod.Logger.Warn($"Localization key \"{key}\" had invalid pluralization, make sure in the localization files it is \"{{^0\"}}, not \"{{0^\"}} ");
+            Mod.Logger.Warn($"Localization key \"{key}\" had invalid pluralization, make sure to use \"{{^0\"}}, not \"{{0^\"}}");
             return key;
         }
     }
