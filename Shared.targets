@@ -30,12 +30,6 @@
   <ItemGroup>
     <AdditionalFiles Remove="obj\**" />
     <AdditionalFiles Remove="bin\**" />
-    <Compile Remove="obj\**" />
-    <Compile Remove="bin\**" />
-    <EmbeddedResource Remove="obj\**" />
-    <EmbeddedResource Remove="bin\**" />
-    <None Remove="obj\**" />
-    <None Remove="bin\**" />
   </ItemGroup>
 
   <ItemGroup>

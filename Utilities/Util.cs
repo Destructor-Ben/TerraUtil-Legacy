@@ -27,7 +27,7 @@ public static partial class Util
         if (!Mod.ContentAutoloadingEnabled)
             return;
 
-        var loadableTypes = AssemblyManager.GetLoadableTypes(Assembly.GetAssembly(typeof(Util)))
+        var loadableTypes = AssemblyManager.GetLoadableTypes(typeof(Util).Assembly)
                 .Where(t => !t.IsAbstract && !t.ContainsGenericParameters)
                 .Where(t => t.IsAssignableTo(typeof(ILoadable)))
                 .Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes) != null)

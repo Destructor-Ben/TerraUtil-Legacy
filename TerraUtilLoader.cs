@@ -3,7 +3,7 @@
 /// A template <see cref="ModSystem"/> for loading content.
 /// </summary>
 /// <typeparam name="T">The type of the content being handled by this loader.</typeparam>
-public class TerraUtilLoader<T> : ModSystem where T : IModType
+public abstract class TerraUtilLoader<T> : ModSystem where T : IModType
 {
     /// <summary>
     /// The instance of this loader.
@@ -28,6 +28,7 @@ public class TerraUtilLoader<T> : ModSystem where T : IModType
 
     public override void Unload()
     {
+        Content?.Clear();
         Content = null;
     }
 }
