@@ -10,7 +10,6 @@ public class PacketSystem : TerraUtilLoader<Packet>
 
     public override void AddContent(Packet content)
     {
-        base.AddContent(content);
         content.Type = idCounter;
         idCounter++;
     }

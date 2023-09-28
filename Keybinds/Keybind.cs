@@ -41,7 +41,7 @@ public abstract class Keybind : TerraUtilModType
 
     protected override void Register()
     {
-        KeybindSystem.Instance.AddContent(this);
+        ModTypeLookup<Keybind>.Register(this);
     }
 
     public sealed override void SetupContent()

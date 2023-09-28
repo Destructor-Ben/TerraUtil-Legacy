@@ -8,9 +8,7 @@ public class KeybindSystem : TerraUtilLoader<Keybind>
         if (Util.IsHeadless)
             return;
 
-        base.AddContent(content);
-        var keybind = KeybindLoader.RegisterKeybind(Mod, content.Name, content.DefaultBinding);
-        content.Key = keybind;
+        content.Key = KeybindLoader.RegisterKeybind(Mod, content.Name, content.DefaultBinding);
     }
 }
 

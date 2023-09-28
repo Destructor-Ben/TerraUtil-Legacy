@@ -8,10 +8,8 @@ public class UISystem : TerraUtilLoader<Interface>
         if (Util.IsHeadless)
             return;
 
-        base.AddContent(content);
         content.UserInterface = new UserInterface();
         content.UserInterface.SetState(content);
-        content.Activate();
     }
 
     public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)

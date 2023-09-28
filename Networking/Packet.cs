@@ -19,7 +19,7 @@ public abstract class Packet : TerraUtilModType
 
     protected sealed override void Register()
     {
-        PacketSystem.Instance.AddContent(this);
+        ModTypeLookup<Packet>.Register(this);
     }
 
     public sealed override void SetupContent()

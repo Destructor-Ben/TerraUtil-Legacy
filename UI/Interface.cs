@@ -19,7 +19,7 @@ public abstract partial class Interface : UIState, ILoadable, IModType
 
     void ILoadable.Load(Mod mod)
     {
-        UISystem.Instance.AddContent(this);
+        ModTypeLookup<Interface>.Register(this);
         Load();
     }
 
