@@ -38,7 +38,7 @@ public static partial class Util
         foreach (var tooltip in tooltips)
         {
             if (tooltipNames.Contains(tooltip.Name))
-                tooltips.Remove(tooltip);//tooltip.Hide();
+                tooltip.Hide();
         }
     }
 
