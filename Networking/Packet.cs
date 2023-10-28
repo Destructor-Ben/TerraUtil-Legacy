@@ -164,6 +164,7 @@ public abstract class Packet : TerraUtilModType
             {
                 packet.Write(client);
             }
+
             Send(packet, SendType.SendToClients);
         }
     }

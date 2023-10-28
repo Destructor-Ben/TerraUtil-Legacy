@@ -90,7 +90,7 @@ public abstract class UIWindow : Interface
         if (!Main.mouseLeft)
             dragging = false;
 
-        if (Main.mouseLeft && TitleBar.ContainsPoint(Main.MouseScreen) || dragging)
+        if ((Main.mouseLeft && TitleBar.ContainsPoint(Main.MouseScreen)) || dragging)
         {
             dragging = true;
 
