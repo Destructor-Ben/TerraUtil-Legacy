@@ -81,7 +81,7 @@ public abstract class UIWindow : Interface
     public override void SafeUpdate(GameTime gameTime)
     {
         // Stop weapons from being able to be used while the window is being hovered over
-        if (IsMouseHovering)
+        if (Panel.IsMouseHovering)
             Main.LocalPlayer.mouseInterface = true;
 
         // Dragging

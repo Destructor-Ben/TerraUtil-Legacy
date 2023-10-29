@@ -1,19 +1,29 @@
 <Project>
+  <!-- Import targets -->
   <Import Project="..\tModLoader.targets" />
   <Import Project="Shared.targets" />
 
-  <PropertyGroup>
-    <IncludeTerraUtil>true</IncludeTerraUtil>
-  </PropertyGroup>
-
+  <!-- Remove lib folder from editor-->
   <ItemGroup>
     <None Remove="lib\**" />
   </ItemGroup>
 
+  <!-- Properties that mods can use -->
+  <PropertyGroup>
+    <IncludeTerraUtil>true</IncludeTerraUtil>
+    <TerraUtilUsingConfig>true</TerraUtilUsingConfig>
+    <TerraUtilUsingContent>true</TerraUtilUsingContent>
+    <TerraUtilUsingCore>true</TerraUtilUsingCore>
+  </PropertyGroup>
+
+  <!-- Implicit usings -->
   <ItemGroup>
-    <Using Include="$(AssemblyName).Configuration" />
+    <Using Include="$(AssemblyName).Configuration" Condition="$(TerraUtilUsingConfig)" />
+    <Using Include="$(AssemblyName).Content" Condition="$(TerraUtilUsingContent)" />
+    <Using Include="$(AssemblyName).Core" Condition="$(TerraUtilUsingCore)"  />
   </ItemGroup>
 
+  <!-- Adding TerraUtil as a project -->
   <ItemGroup>
     <ProjectReference Include="..\TerraUtil\TerraUtil.csproj" />
   </ItemGroup>
@@ -21,21 +31,5 @@
   <!-- Copy TerraUtil to lib folder -->
   <Target Name="BeforeBuild" Condition="$(IncludeTerraUtil)">
     <Copy SourceFiles="$(SolutionDir)TerraUtil\bin\$(Configuration)\$(TargetFramework)\TerraUtil.dll;$(SolutionDir)TerraUtil\bin\$(Configuration)\$(TargetFramework)\TerraUtil.pdb" DestinationFolder="lib"/>
-  </Target>
-
-  <!-- Compile shaders -->
-  <Target Name="CompileShader" BeforeTargets="Build">
-    <ItemGroup>
-      <EffectFiles Include="Assets/Effects/**/*.fx" />
-    </ItemGroup>
-
-    <PropertyGroup>
-      <FxbFile Condition=" true ">
-        Assets/Effects/$([System.IO.Path]::GetFileNameWithoutExtension('%(EffectFiles.FullPath)')).fxb
-      </FxbFile>
-    </PropertyGroup>
-
-    <Delete Files="$(FxbFile)" Condition="Exists('%(EffectFiles.Identity)') And Exists('$(FxbFile)')"></Delete>
-    <Exec Command="fxc /T fx_2_0 /Fo Assets/Effects/$([System.IO.Path]::GetFileNameWithoutExtension('%(EffectFiles.FullPath)')).fxb /Od %(EffectFiles.Identity)" Condition="Exists('%(EffectFiles.Identity)')" />
   </Target>
 </Project>
