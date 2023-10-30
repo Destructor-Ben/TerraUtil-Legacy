@@ -33,19 +33,4 @@
     <None Remove="**\*.xnb" />
     <None Remove="**\*.fxc" />
   </ItemGroup>
-
-  <!-- Compile shaders -->
-  <!-- TODO: fxc has to be added to path to work, add to tML at some point and make it work for mac and linux users -->
-  <Target Name="CompileShader" BeforeTargets="Build">
-    <!-- Finding old effect files and effect source files -->
-    <ItemGroup>
-      <EffectFiles Include="Assets/Effects/**/*.fx" />
-      <FxcFiles Include="Assets/Effects/**/*.fxc" />
-    </ItemGroup>
-
-    <!-- Delete the old fxb files -->
-    <Delete Files="%(FxcFiles.Identity)" Condition="Exists('%(FxcFiles.Identity)')"></Delete>
-    <!-- Compile the fx files -->
-    <Exec Command="fxc /T fx_2_0 /Fo Assets/Effects/$([System.IO.Path]::GetFileNameWithoutExtension('%(EffectFiles.FullPath)')).fxc /Od %(EffectFiles.Identity)" Condition="Exists('%(EffectFiles.Identity)')" />
-  </Target>
 </Project>
