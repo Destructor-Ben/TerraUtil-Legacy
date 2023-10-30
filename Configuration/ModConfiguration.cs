@@ -6,7 +6,7 @@ namespace TerraUtil.Configuration;
 /// <summary>
 /// A variant of <see cref="ModConfig"/> that automatically implements recursive <see cref="ModConfig.NeedsReload(ModConfig)"/>.
 /// </summary>
-// TODO: broken
+// TODO: broken?
 public abstract class ModConfiguration : ModConfig
 {
     private const int MaxDepth = 10;
@@ -35,7 +35,7 @@ public abstract class ModConfiguration : ModConfig
                 return true;
 
             // Otherwise if it's a sub config, then check that as well
-            if (field.Type.IsSubclassOf(typeof(SubConfig)) && ObjectNeedsReload(field.GetValue(currentConfig), field.GetValue(pendingConfig), depth - 1))
+            if (field.Type.IsSubclassOf(typeof(SubConfiguration)) && ObjectNeedsReload(field.GetValue(currentConfig), field.GetValue(pendingConfig), depth - 1))
                 return true;
         }
 

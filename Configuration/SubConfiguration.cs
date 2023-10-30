@@ -8,8 +8,8 @@ namespace TerraUtil.Configuration;
 /// A type that can be extended from to make a sub-config.<br/>
 /// Automatically implements <see cref="object.Equals(object?)"/> and <see cref="object.GetHashCode"/>.
 /// </summary>
-// TODO: broken
-public abstract class SubConfig
+// TODO: broken?
+public abstract class SubConfiguration
 {
     public override bool Equals(object obj)
     {
