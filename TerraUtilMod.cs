@@ -1,6 +1,7 @@
 ﻿using TerraUtil.Networking;
 
 namespace TerraUtil;
+
 /// <summary>
 /// Functions as the base <see cref="Mod"/> class but integrates TerraUtil loading into it.
 /// </summary>

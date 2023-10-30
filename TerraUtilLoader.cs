@@ -1,4 +1,5 @@
 ﻿namespace TerraUtil;
+
 /// <summary>
 /// A template <see cref="ModSystem"/> for loading content.
 /// </summary>

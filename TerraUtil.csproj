@@ -1,7 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="Shared.targets" />
 
+  <!-- tModLoader.targets stuff -->
   <PropertyGroup>
+    <!-- TODO: allow other people to use path for tML -->
     <tMLSteamPath>C:\Program Files (x86)\Steam\steamapps\common\tModLoader\</tMLSteamPath>
     <tMLLibraryPath>$(tMLSteamPath)Libraries</tMLLibraryPath>
     <tMLName>tModLoader</tMLName>

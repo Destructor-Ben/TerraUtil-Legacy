@@ -1,4 +1,5 @@
 ﻿namespace TerraUtil;
+
 /// <summary>
 /// A template <see cref="ModType"/> used by TerraUtil.
 /// </summary>
