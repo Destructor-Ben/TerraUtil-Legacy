@@ -1,6 +1,7 @@
 ﻿using TerraUtil.RecipeGroups;
 
 namespace TerraUtil.Utilities;
+
 public static partial class Util
 {
     /// <summary>

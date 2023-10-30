@@ -2,6 +2,7 @@
 using System.Reflection;
 
 namespace TerraUtil.Edits;
+
 /// <summary>
 /// An abstraction of an IL edit.
 /// </summary>

@@ -1,4 +1,5 @@
 ﻿namespace TerraUtil.UI.Elements;
+
 public class UIDivider : InterfaceElement
 {
     public bool Horizontal;

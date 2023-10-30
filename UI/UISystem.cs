@@ -1,6 +1,7 @@
 ﻿using Terraria.UI;
 
 namespace TerraUtil.UI;
+
 public class UISystem : TerraUtilLoader<Interface>
 {
     public override void AddContent(Interface content)

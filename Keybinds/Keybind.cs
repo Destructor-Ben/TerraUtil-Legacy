@@ -2,6 +2,7 @@
 using Terraria.GameInput;
 
 namespace TerraUtil.Keybinds;
+
 /// <summary>
 /// Provides an abstraction for <see cref="ModKeybind"/>.
 /// </summary>

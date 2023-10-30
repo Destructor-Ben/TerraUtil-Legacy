@@ -1,6 +1,7 @@
 ﻿using Terraria.GameInput;
 
 namespace TerraUtil.Keybinds;
+
 public class KeybindSystem : TerraUtilLoader<Keybind>
 {
     public override void AddContent(Keybind content)

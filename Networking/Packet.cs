@@ -1,4 +1,5 @@
 ﻿namespace TerraUtil.Networking;
+
 /// <summary>
 /// Provides an abstraction for ModPackets.
 /// </summary>

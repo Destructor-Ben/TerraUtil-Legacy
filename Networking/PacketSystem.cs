@@ -1,4 +1,5 @@
 ﻿namespace TerraUtil.Networking;
+
 public class PacketSystem : TerraUtilLoader<Packet>
 {
     private static int idCounter = 0;

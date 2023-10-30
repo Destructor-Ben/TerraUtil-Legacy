@@ -1,6 +1,7 @@
 ﻿using Terraria.UI;
 
 namespace TerraUtil.UI;
+
 public partial class Interface
 {
     // TODO: add ways to not trigger parent OnMouseHover, but still set IsMouseHovering so hover effect apply to parent but don't double sound effects

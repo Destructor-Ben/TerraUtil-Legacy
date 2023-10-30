@@ -1,6 +1,7 @@
 ﻿using Terraria.UI;
 
 namespace TerraUtil.UI;
+
 /// <summary>
 /// Provides an abstraction for a <see cref="Terraria.UI.UserInterface"/> and <see cref="UIState"/>.
 /// </summary>

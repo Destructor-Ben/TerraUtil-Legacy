@@ -1,4 +1,5 @@
 ﻿namespace TerraUtil.RecipeGroups;
+
 public class RecipeGroupSystem : TerraUtilLoader<ModRecipeGroup>
 {
     public override void AddRecipeGroups()

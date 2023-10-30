@@ -4,6 +4,7 @@ using Terraria.ModLoader.UI;
 using Terraria.UI;
 
 namespace TerraUtil.UI.Elements;
+
 // TODO: documentation
 // TODO: allow safe overrides for CreateUI and SafeUpdate
 public abstract class UIWindow : Interface
