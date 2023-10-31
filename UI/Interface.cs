@@ -26,6 +26,7 @@ public abstract partial class Interface : UIState, ILoadable, IModType
 
     void ILoadable.Unload()
     {
+        ResetUI();
         Unload();
     }
 
@@ -39,7 +40,18 @@ public abstract partial class Interface : UIState, ILoadable, IModType
     /// <summary>
     /// Whether <see cref="UserInterface"/> should draw.
     /// </summary>
-    public virtual bool Visible { get; set; } = true;
+    public virtual bool Visible
+    {
+        get => _visible;
+        set
+        {
+            if (value)
+                Activate();
+
+            _visible = value;
+        }
+    }
+    private bool _visible = true;
 
     /// <summary>
     /// Whether <see cref="UserInterface"/> should update.

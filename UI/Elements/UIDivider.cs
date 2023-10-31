@@ -8,7 +8,7 @@ public class UIDivider : InterfaceElement
     {
         Horizontal = horizontal;
 
-        if (horizontal)
+        if (Horizontal)
         {
             Width.Set(0, 1f);
             Height.Set(4, 0f);
@@ -28,6 +28,6 @@ public class UIDivider : InterfaceElement
         var secondaryRect = Horizontal ? new Rectangle((int)dimensions.X, (int)dimensions.Y + 2, (int)dimensions.Width, 2) : new Rectangle((int)dimensions.X + 2, (int)dimensions.Y, 2, (int)dimensions.Height);
 
         spriteBatch.Draw(TextureAssets.MagicPixel.Value, mainRect, Color.LightGray);
-        spriteBatch.Draw(TextureAssets.MagicPixel.Value, secondaryRect, Color.DarkGray);// TODO: colour
+        spriteBatch.Draw(TextureAssets.MagicPixel.Value, secondaryRect, new Color(0.4f, 0.4f, 0.4f));// TODO: colour
     }
 }

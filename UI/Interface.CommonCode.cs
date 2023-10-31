@@ -4,16 +4,20 @@ namespace TerraUtil.UI;
 
 public partial class Interface
 {
-    // TODO: add ways to not trigger parent OnMouseHover, but still set IsMouseHovering so hover effect apply to parent but don't double sound effects
+    // TODO: add ways to not trigger parent OnMouseHover, but still set IsMouseHovering so hover effect apply to parent but don't double sound effects and onhover, etc.
     /// <summary>
     /// Prevents a child element from triggering <see cref="UIElement.OnMouseOver"/> and <see cref="UIElement.OnMouseOut"/> on it's parent.
     /// </summary>
-    public virtual bool UsesNewMouseSystem { get; set; } = true;
+    public virtual bool FixedOnHover => false;
 
+    // TODO: also allow elements to "swallow" mouse inputs when an element is hovered over so ui layers beneath it doesn't get triggered
+    // https://github.com/blushiemagic/MagicStorage/blob/4e780b75bf9fb292926d847cac4387eb142bb098/Common/Systems/MagicUI.cs
+    // https://github.com/blushiemagic/MagicStorage/blob/4e780b75bf9fb292926d847cac4387eb142bb098/Edits/ItemSlotDetours.cs
     /// <summary>
-    /// Called when the UI is updated.
+    /// Prevent's <see cref="Terraria.UI.UserInterface"/> layers below this one from recieving mouse input to avoid element overlapping
     /// </summary>
-    /// <param name="gameTime"></param>
+    public virtual bool BlocksMouseInput => false;
+
     public virtual void SafeUpdate(GameTime gameTime) { }
     public sealed override void Update(GameTime gameTime)
     {
@@ -21,10 +25,6 @@ public partial class Interface
         SafeUpdate(gameTime);
     }
 
-    /// <summary>
-    /// Called when the scroll wheel is used.
-    /// </summary>
-    /// <param name="evt"></param>
     public virtual void SafeScrollWheel(UIScrollWheelEvent evt) { }
     public sealed override void ScrollWheel(UIScrollWheelEvent evt)
     {
@@ -32,10 +32,6 @@ public partial class Interface
         SafeScrollWheel(evt);
     }
 
-    /// <summary>
-    /// Called when the mouse starts hovering hovers over this element.
-    /// </summary>
-    /// <param name="evt"></param>
     public virtual void SafeMouseOver(UIMouseEvent evt) { }
     public sealed override void MouseOver(UIMouseEvent evt)
     {
@@ -43,10 +39,6 @@ public partial class Interface
         SafeMouseOver(evt);
     }
 
-    /// <summary>
-    /// Called when the mouse stops hovering over this element.
-    /// </summary>
-    /// <param name="evt"></param>
     public virtual void SafeMouseOut(UIMouseEvent evt) { }
     public sealed override void MouseOut(UIMouseEvent evt)
     {
@@ -54,13 +46,8 @@ public partial class Interface
         SafeMouseOut(evt);
     }
 
-    // TODO: document these
     #region LMB
 
-    /// <summary>
-    /// Called when the left mouse button is released on this element.
-    /// </summary>
-    /// <param name="evt"></param>
     public virtual void SafeMouseUp(UIMouseEvent evt) { }
     public sealed override void LeftMouseUp(UIMouseEvent evt)
     {
@@ -68,10 +55,6 @@ public partial class Interface
         SafeMouseUp(evt);
     }
 
-    /// <summary>
-    /// Called when the left mouse button is pressed down on this element.
-    /// </summary>
-    /// <param name="evt"></param>
     public virtual void SafeMouseDown(UIMouseEvent evt) { }
     public sealed override void LeftMouseDown(UIMouseEvent evt)
     {

@@ -5,15 +5,8 @@ using Terraria.UI;
 
 namespace TerraUtil.UI.Elements;
 
-// TODO: documentation
-// TODO: allow safe overrides for CreateUI and SafeUpdate
 public abstract class UIWindow : Interface
 {
-    public override int GetLayerInsertIndex(List<GameInterfaceLayer> layers)
-    {
-        return layers.FindIndex(l => l.Name == "Vanilla: Mouse Text");
-    }
-
     protected abstract LocalizedText WindowTitle { get; }
     protected virtual Vector2 Size { get; set; } = new Vector2(900, 600);
     protected virtual Vector2 InitialPosition { get; set; } = new Vector2(0.5f, 0.5f);
@@ -21,11 +14,15 @@ public abstract class UIWindow : Interface
     public UIPanel Panel { get; private set; }
     public UIElement Content { get; private set; }
     private UIElement TitleBar;
-
-    public event Action OnClose;
+    private UIImageButton CloseButton;
 
     private Vector2 dragOffset;
     private bool dragging;
+
+    public override int GetLayerInsertIndex(List<GameInterfaceLayer> layers)
+    {
+        return layers.FindIndex(l => l.Name == "Vanilla: Mouse Text");
+    }
 
     protected override void CreateUI()
     {
@@ -36,6 +33,7 @@ public abstract class UIWindow : Interface
             Height = { Pixels = Size.Y },
             HAlign = InitialPosition.X,
             VAlign = InitialPosition.Y,
+            PaddingTop = 6,
             BackgroundColor = UICommon.MainPanelBackground,
         };
         Append(Panel);
@@ -52,23 +50,31 @@ public abstract class UIWindow : Interface
         Content = new UIElement
         {
             Width = { Percent = 1f },
-            Height = { Pixels = -20, Percent = 1f },
+            Height = { Pixels = -30, Percent = 1f },
             Top = { Pixels = 30 },
             PaddingTop = 12,
         };
         Panel.Append(Content);
 
         // Close button
-        // TODO: replace texture requesting when new asset system comes around
-        var closeButton = new UIImageButton(ModContent.Request<Texture2D>("Terraria/Images/UI/SearchCancel", AssetRequestMode.ImmediateLoad))
+        CloseButton = new UIImageButton(Util.GetTexture("SearchCancel", loadAsync: false, prefix: "Terraria.Images.UI"))
         {
+            VAlign = 0f,
             HAlign = 1f,
+            MarginRight = -6,
         };
-        closeButton.OnLeftClick += CloseWindow;
-        TitleBar.Append(closeButton);
+        CloseButton.OnLeftClick += (_, _) =>
+        {
+            Visible = false;
+            SoundEngine.PlaySound(SoundID.MenuClose);
+        };
+        TitleBar.Append(CloseButton);
 
         // Title
-        var title = new UIText(WindowTitle, 0.5f, large: true);
+        var title = new UIText(WindowTitle, 0.5f, large: true)
+        {
+            VAlign = 0.5f,
+        };
         TitleBar.Append(title);
 
         // Divider
@@ -82,7 +88,8 @@ public abstract class UIWindow : Interface
     public override void SafeUpdate(GameTime gameTime)
     {
         // Stop weapons from being able to be used while the window is being hovered over
-        if (Panel.IsMouseHovering)
+        // TODO: move this to be included with all UI
+        if (Panel.IsMouseHovering && Visible)
             Main.LocalPlayer.mouseInterface = true;
 
         // Dragging
@@ -91,7 +98,8 @@ public abstract class UIWindow : Interface
         if (!Main.mouseLeft)
             dragging = false;
 
-        if ((Main.mouseLeft && TitleBar.ContainsPoint(Main.MouseScreen)) || dragging)
+        // TODO: only start dragging on left click
+        if (dragging || (Main.mouseLeft && TitleBar.ContainsPoint(Main.MouseScreen) && !CloseButton.ContainsPoint(Main.MouseScreen)))
         {
             dragging = true;
 
@@ -108,12 +116,5 @@ public abstract class UIWindow : Interface
         {
             dragOffset = Vector2.Zero;
         }
-    }
-
-    private void CloseWindow(UIMouseEvent evt, UIElement listeningElement)
-    {
-        SoundEngine.PlaySound(SoundID.MenuClose);
-        Visible = false;
-        OnClose?.Invoke();
     }
 }
