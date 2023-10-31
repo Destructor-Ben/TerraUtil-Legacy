@@ -1,6 +1,8 @@
-﻿namespace TerraUtil.UI.Elements;
+﻿using Terraria.UI;
 
-public class UIDivider : InterfaceElement
+namespace TerraUtil.UI.Elements;
+
+public class UIDivider : UIElement
 {
     public bool Horizontal;
 

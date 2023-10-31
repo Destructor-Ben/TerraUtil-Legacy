@@ -4,6 +4,10 @@ using Terraria.UI;
 
 namespace TerraUtil.Utilities;
 
+// TODO: add ways to not trigger parent OnMouseHover, but still set IsMouseHovering so hover effect apply to parent but don't double sound effects and onhover, etc.
+// TODO: also allow elements to "swallow" mouse inputs when an element is hovered over so ui layers beneath it doesn't get triggered
+// https://github.com/blushiemagic/MagicStorage/blob/4e780b75bf9fb292926d847cac4387eb142bb098/Common/Systems/MagicUI.cs
+// https://github.com/blushiemagic/MagicStorage/blob/4e780b75bf9fb292926d847cac4387eb142bb098/Edits/ItemSlotDetours.cs
 public static partial class Util
 {
     /// <summary>

@@ -87,14 +87,8 @@ public abstract partial class Interface : UIState, ILoadable, IModType
         RemoveAllChildren();
         ResetUI();
         CreateUI();
-        SafeOnActivate();
         Recalculate();
     }
-
-    /// <summary>
-    /// Called when the UI is activated.
-    /// </summary>
-    public virtual void SafeOnActivate() { }
 
     /// <summary>
     /// Override this to initialie your UI and any data you might want to store.

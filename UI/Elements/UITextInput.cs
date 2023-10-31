@@ -1,6 +1,8 @@
-﻿namespace TerraUtil.UI.Elements;
+﻿using Terraria.UI;
+
+namespace TerraUtil.UI.Elements;
 
 // TODO: implement text input
-public class UITextInput : InterfaceElement
+public class UITextInput : UIElement
 {
 }

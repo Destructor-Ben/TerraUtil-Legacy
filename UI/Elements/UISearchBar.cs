@@ -1,6 +1,8 @@
-﻿namespace TerraUtil.UI.Elements;
+﻿using Terraria.UI;
+
+namespace TerraUtil.UI.Elements;
 
 // TODO: implement search bar
-public class UISearchBar : InterfaceElement
+public class UISearchBar : UIElement
 {
 }
