@@ -85,8 +85,10 @@ public abstract class UIWindow : Interface
         TitleBar.Append(divider);
     }
 
-    public override void SafeUpdate(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
+        base.Update(gameTime);
+
         // Stop weapons from being able to be used while the window is being hovered over
         // TODO: move this to be included with all UI
         if (Panel.IsMouseHovering && Visible)
