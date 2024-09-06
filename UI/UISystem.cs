@@ -9,7 +9,7 @@ public class UISystem : TerraUtilLoader<Interface>
         if (Util.IsHeadless)
             return;
 
-        content.UserInterface = new UserInterface();
+        content.UserInterface = new();
         content.UserInterface.SetState(content);
     }
 
@@ -24,17 +24,21 @@ public class UISystem : TerraUtilLoader<Interface>
             if (index == -1)
                 return;
 
-            layers.Insert(index, new LegacyGameInterfaceLayer(
-                Util.Mod.Name + ": " + ui.Name,
-                delegate
-                {
-                    if (!ui.Visible)
+            layers.Insert(
+                index,
+                new LegacyGameInterfaceLayer(
+                    Util.Mod.Name + ": " + ui.Name,
+                    delegate
+                    {
+                        if (!ui.Visible)
+                            return true;
+
+                        ui.UserInterface?.Draw(Main.spriteBatch, null);
                         return true;
-                    ui.UserInterface?.Draw(Main.spriteBatch, null);
-                    return true;
-                },
-                ui.ScaleType
-            ));
+                    },
+                    ui.ScaleType
+                )
+            );
         }
     }
 

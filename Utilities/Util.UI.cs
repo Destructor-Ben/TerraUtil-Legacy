@@ -1,5 +1,4 @@
-﻿using Terraria.Audio;
-using Terraria.ModLoader.UI;
+﻿using Terraria.ModLoader.UI;
 using Terraria.UI;
 
 namespace TerraUtil.Utilities;
@@ -11,27 +10,27 @@ namespace TerraUtil.Utilities;
 public static partial class Util
 {
     /// <summary>
-    /// A <see cref="Vector2"/> representing the size of the screen.
+    /// A <see cref="Vector2" /> representing the size of the screen.
     /// </summary>
     public static Vector2 ScreenSize => Main.ScreenSize.ToVector2();
 
     /// <summary>
-    /// A <see cref="Vector2"/> representing the position of the screen.
+    /// A <see cref="Vector2" /> representing the position of the screen.
     /// </summary>
     public static Vector2 ScreenPos => Main.screenPosition;
 
     /// <summary>
-    /// A <see cref="Rectangle"/> representing the screen's position and size.
+    /// A <see cref="Rectangle" /> representing the screen's position and size.
     /// </summary>
     public static Rectangle Screen => new((int)ScreenPos.X, (int)ScreenPos.Y, (int)ScreenSize.X, (int)ScreenSize.Y);
 
     /// <summary>
-    /// A <see cref="Vector2"/> representing the centre of the screen.
+    /// A <see cref="Vector2" /> representing the centre of the screen.
     /// </summary>
     public static Vector2 ScreenCenter => ScreenSize / 2f;
 
     /// <summary>
-    /// A <see cref="Vector2"/> representing the centre of the screen in world coordinates.
+    /// A <see cref="Vector2" /> representing the centre of the screen in world coordinates.
     /// </summary>
     public static Vector2 ScreenWorldCenter => Screen.Center.ToVector2();
 
@@ -99,14 +98,14 @@ public static partial class Util
     /// <summary>
     /// Makes the specified element display the specified mouse text when hovered over.
     /// </summary>
-    /// <typeparam name="T">The type of <paramref name="element"/>.</typeparam>
-    /// <param name="element">The <see cref="UIElement"/> to display the hover text when hovering over.</param>
+    /// <typeparam name="T">The type of <paramref name="element" />.</typeparam>
+    /// <param name="element">The <see cref="UIElement" /> to display the hover text when hovering over.</param>
     /// <param name="text">The hover text to display.</param>
     /// <param name="tooltip">Whether a tooltip background should be displayed.</param>
-    /// <returns><paramref name="element"/> to allow for chaining.</returns>
+    /// <returns><paramref name="element" /> to allow for chaining.</returns>
     public static T WithHoverText<T>(this T element, string text, bool tooltip = false) where T : UIElement
     {
-        element.OnUpdate += delegate (UIElement affectedElement)
+        element.OnUpdate += delegate(UIElement affectedElement)
         {
             if (element.IsMouseHovering)
                 MouseText(text, tooltip);
@@ -118,22 +117,22 @@ public static partial class Util
     /// <summary>
     /// Makes the specified element play sounds when clicked or hovered over.
     /// </summary>
-    /// <typeparam name="T">The type of <paramref name="element"/>.</typeparam>
-    /// <param name="element">The <see cref="UIElement"/> to play hover sounds when interacted with.</param>
-    /// <param name="hoverSound">The <see cref="SoundStyle"/> to play when this element is hovered over.</param>
-    /// <param name="clickSound">The <see cref="SoundStyle"/> to play when this element is left clicked.</param>
-    /// <returns><paramref name="element"/> to allow for chaining.</returns>
+    /// <typeparam name="T">The type of <paramref name="element" />.</typeparam>
+    /// <param name="element">The <see cref="UIElement" /> to play hover sounds when interacted with.</param>
+    /// <param name="hoverSound">The <see cref="SoundStyle" /> to play when this element is hovered over.</param>
+    /// <param name="clickSound">The <see cref="SoundStyle" /> to play when this element is left clicked.</param>
+    /// <returns><paramref name="element" /> to allow for chaining.</returns>
     public static T WithHoverSounds<T>(this T element, SoundStyle? hoverSound = null, SoundStyle? clickSound = null) where T : UIElement
     {
         // Hover sound
-        element.OnMouseOver += delegate (UIMouseEvent evt, UIElement listeningElement)
+        element.OnMouseOver += delegate(UIMouseEvent evt, UIElement listeningElement)
         {
             if (hoverSound != null)
                 SoundEngine.PlaySound(hoverSound.Value);
         };
 
         // Click sound
-        element.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement)
+        element.OnLeftClick += delegate(UIMouseEvent evt, UIElement listeningElement)
         {
             if (clickSound != null)
                 SoundEngine.PlaySound(clickSound.Value);

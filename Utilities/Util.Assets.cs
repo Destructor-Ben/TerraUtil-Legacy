@@ -9,7 +9,7 @@ public static partial class Util
     /// <param name="name">The name of the asset.</param>
     /// <param name="loadAsync">Whether the asset will be loaded asynchronously or immediately.</param>
     /// <param name="prefix">An override for the prefix for the texture path.</param>
-    /// <returns>The asset at location <c>{ModName}/Assets/{<paramref name="name"/>}</c>.</returns>
+    /// <returns>The asset at location <c>{ModName}/Assets/{<paramref name="name" />}</c>.</returns>
     public static Asset<T> GetAsset<T>(string name, bool loadAsync = true, string prefix = null) where T : class
     {
         prefix ??= $"{Mod.Name}/Assets";
@@ -22,7 +22,7 @@ public static partial class Util
     /// <param name="name">The name of the texture.</param>
     /// <param name="loadAsync">Whether the texture will be loaded asynchronously or immediately.</param>
     /// <param name="prefix">An override for the prefix for the texture path.</param>
-    /// <returns>The texture at location <c>{ModName}/Assets/Textures/{<paramref name="name"/>}</c>.</returns>
+    /// <returns>The texture at location <c>{ModName}/Assets/Textures/{<paramref name="name" />}</c>.</returns>
     public static Asset<Texture2D> GetTexture(string name, bool loadAsync = true, string prefix = null)
     {
         prefix ??= $"{Mod.Name}/Assets/Textures";

@@ -16,9 +16,9 @@ public class PacketSystem : TerraUtilLoader<Packet>
     }
 
     /// <summary>
-    /// Call this in <see cref="Mod.HandlePacket(BinaryReader, int)"/> to enable custom packets.
+    /// Call this in <see cref="Mod.HandlePacket(BinaryReader, int)" /> to enable custom packets.
     /// </summary>
-    /// <param name="reader">The <see cref="BinaryReader"/> used to read the data.</param>
+    /// <param name="reader">The <see cref="BinaryReader" /> used to read the data.</param>
     /// <param name="sender">The sender of the packet.</param>
     public static void HandlePacket(BinaryReader reader, int sender)
     {

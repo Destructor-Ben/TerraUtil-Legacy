@@ -8,7 +8,7 @@ namespace TerraUtil.Edits;
 /// </summary>
 public abstract class ILEdit : ILoadable
 {
-    /// <inheritdoc cref="ModType.Mod"/>
+    /// <inheritdoc cref="ModType.Mod" />
     public Mod Mod { get; internal set; }
 
     public void Load(Mod mod)
@@ -23,7 +23,7 @@ public abstract class ILEdit : ILoadable
     }
 
     /// <summary>
-    /// This is where you will add the edit using the auto generated MonoMod hooks.<br/>
+    /// This is where you will add the edit using the auto generated MonoMod hooks.<br />
     /// For example:
     /// <code>
     /// public override void AddEdit()
@@ -35,7 +35,7 @@ public abstract class ILEdit : ILoadable
     public abstract void AddEdit();
 
     /// <summary>
-    /// Call this in <see cref="AddEdit"/> to edit the IL.
+    /// Call this in <see cref="AddEdit" /> to edit the IL.
     /// </summary>
     /// <param name="il">The IL being edited.</param>
     /// <exception cref="ILPatchFailureException"></exception>
@@ -53,9 +53,9 @@ public abstract class ILEdit : ILoadable
     }
 
     /// <summary>
-    /// This is where you will apply your IL edit. It is wrapped in a try catch so you can use <see cref="ILCursor.Goto(int, MoveType, bool)"/> and other methods that throw exceptions.
+    /// This is where you will apply your IL edit. It is wrapped in a try catch so you can use <see cref="ILCursor.Goto(int, MoveType, bool)" /> and other methods that throw exceptions.
     /// </summary>
-    /// <param name="c">The <see cref="ILCursor"/> used to edit the IL.</param>
+    /// <param name="c">The <see cref="ILCursor" /> used to edit the IL.</param>
     public abstract void Apply(ILCursor c);
 }
 
@@ -69,7 +69,7 @@ public abstract class ILEditReflection : ILEdit
     /// </summary>
     public abstract MethodInfo Method { get; }
 
-    public override void AddEdit()
+    public sealed override void AddEdit()
     {
         MonoModHooks.Modify(Method, PrepareEdit);
     }

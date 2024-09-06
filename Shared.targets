@@ -15,10 +15,13 @@
     <Using Include="Microsoft.Xna.Framework.Graphics" />
     <Using Include="ReLogic.Content" />
     <Using Include="Terraria" />
+    <Using Include="Terraria.Audio" />
     <Using Include="Terraria.GameContent" />
     <Using Include="Terraria.ID" />
     <Using Include="Terraria.Localization" />
     <Using Include="Terraria.ModLoader" />
+    <Using Include="Terraria.Utilities" />
+    <Using Include="Terraria.DataStructures" />
     <Using Include="TerraUtil" />
     <Using Include="TerraUtil.Utilities" />
   </ItemGroup>

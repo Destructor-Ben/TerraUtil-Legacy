@@ -26,10 +26,10 @@ public class UIDivider : UIElement
     {
         var dimensions = GetDimensions();
 
-        var mainRect = Horizontal ? new Rectangle((int)dimensions.X, (int)dimensions.Y, (int)dimensions.Width, 2) : new Rectangle((int)dimensions.X, (int)dimensions.Y, 2, (int)dimensions.Height);
-        var secondaryRect = Horizontal ? new Rectangle((int)dimensions.X, (int)dimensions.Y + 2, (int)dimensions.Width, 2) : new Rectangle((int)dimensions.X + 2, (int)dimensions.Y, 2, (int)dimensions.Height);
+        var mainRect = Horizontal ? new((int)dimensions.X, (int)dimensions.Y, (int)dimensions.Width, 2) : new Rectangle((int)dimensions.X,              (int)dimensions.Y, 2, (int)dimensions.Height);
+        var secondaryRect = Horizontal ? new((int)dimensions.X, (int)dimensions.Y + 2, (int)dimensions.Width, 2) : new Rectangle((int)dimensions.X + 2, (int)dimensions.Y, 2, (int)dimensions.Height);
 
-        spriteBatch.Draw(TextureAssets.MagicPixel.Value, mainRect, Color.LightGray);
-        spriteBatch.Draw(TextureAssets.MagicPixel.Value, secondaryRect, new Color(0.4f, 0.4f, 0.4f));// TODO: colour
+        spriteBatch.Draw(TextureAssets.MagicPixel.Value, mainRect,      Color.LightGray);
+        spriteBatch.Draw(TextureAssets.MagicPixel.Value, secondaryRect, new(0.4f, 0.4f, 0.4f)); // TODO: colour
     }
 }

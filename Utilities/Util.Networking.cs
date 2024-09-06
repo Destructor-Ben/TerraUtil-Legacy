@@ -31,7 +31,7 @@ public static partial class Util
     /// Gets if the given ID is the server.
     /// </summary>
     /// <param name="whoAmI">The ID to check.</param>
-    /// <returns><see langword="true"/> if <paramref name="whoAmI"/> is 255 or -1, else <see langword="false"/>.</returns>
+    /// <returns><see langword="true" /> if <paramref name="whoAmI" /> is 255 or -1, else <see langword="false" />.</returns>
     public static bool IsServerID(int whoAmI)
     {
         return whoAmI is 255 or -1;
@@ -41,7 +41,7 @@ public static partial class Util
     /// Gets the net ID of a machine.
     /// </summary>
     /// <param name="whoAmI">The ID of the machine.</param>
-    /// <returns><see langword="null"/> if <paramref name="whoAmI"/> is the server, otherwise the whoAmI of a client.</returns>
+    /// <returns><see langword="null" /> if <paramref name="whoAmI" /> is the server, otherwise the whoAmI of a client.</returns>
     public static int? MachineID(int whoAmI)
     {
         return IsServerID(whoAmI) ? null : whoAmI;

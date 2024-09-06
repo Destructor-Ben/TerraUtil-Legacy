@@ -1,20 +1,20 @@
 ﻿namespace TerraUtil;
 
 /// <summary>
-/// A template <see cref="ModSystem"/> for loading content.
+/// A template <see cref="ModSystem" /> for loading content.
 /// </summary>
 /// <typeparam name="T">The type of the content being handled by this loader.</typeparam>
 public abstract class TerraUtilLoader<T> : ModSystem where T : IModType, ILoadable
 {
+    public static IList<T> Content;
+
     /// <summary>
     /// The instance of this loader.
     /// </summary>
     public static TerraUtilLoader<T> Instance => ModContent.GetInstance<TerraUtilLoader<T>>();
 
-    /// <inheritdoc cref="ModType.Mod"/>
+    /// <inheritdoc cref="ModType.Mod" />
     public static new Mod Mod => Util.Mod;
-
-    public static IList<T> Content;
 
     public override void Load()
     {

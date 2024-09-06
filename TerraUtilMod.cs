@@ -3,7 +3,7 @@
 namespace TerraUtil;
 
 /// <summary>
-/// Functions as the base <see cref="Mod"/> class but integrates TerraUtil loading into it.
+/// Functions as the base <see cref="Mod" /> class but integrates TerraUtil loading into it.
 /// </summary>
 public class TerraUtilMod : Mod
 {

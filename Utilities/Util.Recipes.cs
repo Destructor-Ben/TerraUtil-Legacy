@@ -5,7 +5,7 @@ namespace TerraUtil.Utilities;
 public static partial class Util
 {
     /// <summary>
-    /// Removes all recipes from <paramref name="type"/> that aren't created by this mod.
+    /// Removes all recipes from <paramref name="type" /> that aren't created by this mod.
     /// </summary>
     /// <param name="type">The item type to remove the recipes from.</param>
     public static void RemoveRecipesForItem(int type)
@@ -20,7 +20,7 @@ public static partial class Util
     /// <summary>
     /// Adds a recipe group ingredient to this recipe with the given RecipeGroup name and stack size.
     /// </summary>
-    /// <typeparam name="T">The <see cref="ModRecipeGroup"/>.</typeparam>
+    /// <typeparam name="T">The <see cref="ModRecipeGroup" />.</typeparam>
     /// <param name="recipe">The recipe to add the group to.</param>
     /// <param name="stack">The amount of the recipe group to add.</param>
     /// <returns>The given recipe to allow for chaining.</returns>

@@ -1,13 +1,15 @@
 ﻿namespace TerraUtil.RecipeGroups;
 
 /// <summary>
-/// An abstraction for <see cref="RecipeGroup"/>.
+/// An abstraction for <see cref="RecipeGroup" />.
 /// </summary>
 public abstract class ModRecipeGroup : TerraUtilModType
 {
     /// <summary>
     /// The list of items this recipe groups contains.
     /// </summary>
+
+    // TODO: change this to an ienumerable metho that uses yield return
     public abstract List<int> ValidItems { get; }
 
     /// <summary>
@@ -16,7 +18,7 @@ public abstract class ModRecipeGroup : TerraUtilModType
     public virtual int ItemIconID => ValidItems[0];
 
     /// <summary>
-    /// The instance of the <see cref="RecipeGroup"/>.
+    /// The instance of the <see cref="RecipeGroup" />.
     /// </summary>
     public RecipeGroup Group { get; internal set; }
 

@@ -5,7 +5,7 @@
 /// </summary>
 public abstract class Detour : ILoadable
 {
-    /// <inheritdoc cref="ModType.Mod"/>
+    /// <inheritdoc cref="ModType.Mod" />
     public Mod Mod { get; internal set; }
 
     public void Load(Mod mod)

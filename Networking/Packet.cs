@@ -13,7 +13,7 @@ public abstract class Packet : TerraUtilModType
         SendToClient,
         SendToClients,
         SendToAllClients,
-        SendToAll,
+        SendToAll
     }
 
     public int Type { get; internal set; }
@@ -33,7 +33,7 @@ public abstract class Packet : TerraUtilModType
     #region Public Stuff
 
     /// <summary>
-    /// If true and the current machine is the target of a packet, the packet will also be handled on that machine.<br/>
+    /// If true and the current machine is the target of a packet, the packet will also be handled on that machine.<br />
     /// Works in singleplayer.
     /// </summary>
     public virtual bool HandleIfTarget => true;
@@ -41,25 +41,25 @@ public abstract class Packet : TerraUtilModType
     /// <summary>
     /// Makes the packet do something when it has arrived.
     /// </summary>
-    /// <param name="fromWho"><see langword="null"/> if from the server, otherwise the whoAmI of a client.</param>
+    /// <param name="fromWho"><see langword="null" /> if from the server, otherwise the whoAmI of a client.</param>
     public abstract void Handle(int? fromWho);
 
     /// <summary>
     /// Called when the packet is about to be sent.
     /// </summary>
-    /// <param name="toWho"><see langword="null"/> if to the server, otherwise the whoAmI of a client.</param>
+    /// <param name="toWho"><see langword="null" /> if to the server, otherwise the whoAmI of a client.</param>
     public virtual void OnSend(int? toWho) { }
 
     /// <summary>
     /// Serialize the packet data in this method.
     /// </summary>
-    /// <param name="writer">The <see cref="BinaryWriter"/> used to write the data.</param>
+    /// <param name="writer">The <see cref="BinaryWriter" /> used to write the data.</param>
     public abstract void Serialize(BinaryWriter writer);
 
     /// <summary>
     /// Deserialize the packet data in this method.
     /// </summary>
-    /// <param name="reader">The <see cref="BinaryReader"/> used to read the data.</param>
+    /// <param name="reader">The <see cref="BinaryReader" /> used to read the data.</param>
     public abstract void Deserialize(BinaryReader reader);
 
     #endregion
@@ -67,9 +67,9 @@ public abstract class Packet : TerraUtilModType
     #region Sending
 
     /// <summary>
-    /// Gets a <see cref="ModPacket"/> with it's type and data already written to it.
+    /// Gets a <see cref="ModPacket" /> with it's type and data already written to it.
     /// </summary>
-    /// <returns>A <see cref="ModPacket"/> with it's type and data written to it in that order.</returns>
+    /// <returns>A <see cref="ModPacket" /> with it's type and data written to it in that order.</returns>
     internal ModPacket GetPacket()
     {
         if (Util.IsSingleplayer)
@@ -93,7 +93,7 @@ public abstract class Packet : TerraUtilModType
         packet.Send(toWho, ignoreWho);
     }
 
-    /// <summary>   
+    /// <summary>
     /// Sends this packet to the server.
     /// </summary>
     public void SendToServer()

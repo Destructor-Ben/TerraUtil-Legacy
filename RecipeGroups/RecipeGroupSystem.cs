@@ -6,10 +6,7 @@ public class RecipeGroupSystem : TerraUtilLoader<ModRecipeGroup>
     {
         foreach (var modGroup in Content)
         {
-            var group = new RecipeGroup(() => Util.GetTextValue($"RecipeGroups.{modGroup.Name}"), modGroup.ValidItems.ToArray())
-            {
-                IconicItemId = modGroup.ItemIconID
-            };
+            var group = new RecipeGroup(() => Util.GetTextValue($"RecipeGroups.{modGroup.Name}"), modGroup.ValidItems.ToArray()) { IconicItemId = modGroup.ItemIconID };
 
             RecipeGroup.RegisterGroup(Mod.Name + ":" + modGroup.Name, group);
             modGroup.Group = group;

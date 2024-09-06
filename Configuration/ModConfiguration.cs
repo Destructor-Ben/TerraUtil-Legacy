@@ -4,8 +4,9 @@ using Terraria.ModLoader.Config;
 namespace TerraUtil.Configuration;
 
 /// <summary>
-/// A variant of <see cref="ModConfig"/> that automatically implements recursive <see cref="ModConfig.NeedsReload(ModConfig)"/>.
+/// A variant of <see cref="ModConfig" /> that automatically implements recursive <see cref="ModConfig.NeedsReload(ModConfig)" />.
 /// </summary>
+
 // TODO: broken?
 public abstract class ModConfiguration : ModConfig
 {

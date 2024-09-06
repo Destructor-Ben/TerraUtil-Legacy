@@ -3,6 +3,4 @@
 namespace TerraUtil.UI.Elements;
 
 // TODO: implement search bar
-public class UISearchBar : UIElement
-{
-}
+public class UISearchBar : UIElement { }

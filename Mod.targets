@@ -12,7 +12,7 @@
   <PropertyGroup>
     <TerraUtil-Include>true</TerraUtil-Include>
     <TerraUtil-CompileShaders>true</TerraUtil-CompileShaders>
-    
+
     <TerraUtil-UsingConfig>true</TerraUtil-UsingConfig>
     <TerraUtil-UsingContent>true</TerraUtil-UsingContent>
     <TerraUtil-UsingCore>true</TerraUtil-UsingCore>
@@ -22,7 +22,7 @@
   <ItemGroup>
     <Using Include="$(AssemblyName).Configuration" Condition="$(TerraUtil-UsingConfig)" />
     <Using Include="$(AssemblyName).Content" Condition="$(TerraUtil-UsingContent)" />
-    <Using Include="$(AssemblyName).Core" Condition="$(TerraUtil-UsingCore)"  />
+    <Using Include="$(AssemblyName).Core" Condition="$(TerraUtil-UsingCore)" />
   </ItemGroup>
 
   <!-- Adding TerraUtil as a project -->
@@ -48,6 +48,6 @@
   <!-- Copy TerraUtil to lib folder -->
   <!-- TODO: make this work for other people too -->
   <Target Name="IncludeTerrautil" BeforeTargets="BeforeBuild" Condition="$(TerraUtil-Include)">
-    <Copy SourceFiles="$(SolutionDir)TerraUtil\bin\$(Configuration)\$(TargetFramework)\TerraUtil.dll;$(SolutionDir)TerraUtil\bin\$(Configuration)\$(TargetFramework)\TerraUtil.pdb" DestinationFolder="lib"/>
+    <Copy SourceFiles="$(ProjectDir)..\TerraUtil\bin\$(Configuration)\$(TargetFramework)\TerraUtil.dll;$(ProjectDir)..\TerraUtil\bin\$(Configuration)\$(TargetFramework)\TerraUtil.pdb" DestinationFolder="lib" />
   </Target>
 </Project>

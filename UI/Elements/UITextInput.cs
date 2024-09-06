@@ -3,6 +3,4 @@
 namespace TerraUtil.UI.Elements;
 
 // TODO: implement text input
-public class UITextInput : UIElement
-{
-}
+public class UITextInput : UIElement { }
